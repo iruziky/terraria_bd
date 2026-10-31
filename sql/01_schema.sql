@@ -22,7 +22,10 @@ CREATE TABLE enemy (
     does_enrage     boolean NOT NULL DEFAULT false,
     does_despawn    boolean NOT NULL DEFAULT false,
     is_invulnerable boolean NOT NULL DEFAULT false,
-    lore            text
+    lore            text,
+    CHECK (hp > 0),
+    CHECK (defense >= 0),
+    CHECK (move_speed >= 0)
 );
 
 -- Um inimigo pode habitar vários biomas (relação N:N).
@@ -53,7 +56,10 @@ CREATE TABLE enemy_drop (
     chance       numeric(7, 6) NOT NULL,
     min_quantity integer NOT NULL DEFAULT 1,
     max_quantity integer NOT NULL DEFAULT 1,
-    PRIMARY KEY (id_enemy, id_item)
+    PRIMARY KEY (id_enemy, id_item),
+    CHECK (chance > 0 AND chance <= 1),
+    CHECK (min_quantity >= 1),
+    CHECK (min_quantity <= max_quantity)
 );
 
 -- id_station nulo significa receita feita à mão.
