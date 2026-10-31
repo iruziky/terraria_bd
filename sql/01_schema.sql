@@ -81,3 +81,19 @@ CREATE TABLE player (
     team             text NOT NULL DEFAULT 'none',
     general_stats    jsonb
 );
+
+CREATE TABLE inventory (
+    id_inventory serial PRIMARY KEY,
+    id_player    integer NOT NULL REFERENCES player (id_player) ON DELETE CASCADE,
+    type         text NOT NULL,
+    capacity     integer NOT NULL
+);
+
+CREATE TABLE inventory_item (
+    id_inventory integer REFERENCES inventory (id_inventory) ON DELETE CASCADE,
+    slot         integer,
+    id_item      integer NOT NULL REFERENCES item (id_item),
+    quantity     integer NOT NULL DEFAULT 1,
+    equipped     boolean NOT NULL DEFAULT false,
+    PRIMARY KEY (id_inventory, slot)
+);
