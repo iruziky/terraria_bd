@@ -37,7 +37,13 @@ CREATE TABLE item (
     name    text NOT NULL UNIQUE,
     type    text NOT NULL,
     rarity  text NOT NULL,
-    damage  integer
+    damage  integer,
+    CHECK (type IN ('weapon', 'tool', 'armor', 'accessory', 'block',
+                    'material', 'consumable', 'ammo', 'crafting_station')),
+    CHECK (rarity IN ('Gray', 'White', 'Blue', 'Green', 'Orange', 'Light Red',
+                      'Pink', 'Light Purple', 'Lime', 'Yellow', 'Cyan',
+                      'Red', 'Purple')),
+    CHECK (damage >= 0)
 );
 
 -- "drop" é palavra reservada do SQL, por isso enemy_drop.
