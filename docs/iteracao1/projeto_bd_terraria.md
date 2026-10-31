@@ -20,8 +20,7 @@ O banco permite consultar, por exemplo, os itens de um jogador, os inimigos de u
 
 O diagrama apresenta as entidades, seus atributos, chaves primárias (`PK`), chaves estrangeiras (`FK`), relacionamentos e cardinalidades.
 
-- [Visualizar diagrama UML](terraria_db_schema_expanded.html)
-- [Abrir SVG](terraria_db_schema_expanded.svg)
+![Diagrama UML da primeira iteração](terraria_db_schema_expanded.svg)
 
 ### Entidades
 
