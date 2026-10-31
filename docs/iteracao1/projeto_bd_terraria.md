@@ -20,8 +20,7 @@ O banco permite consultar, por exemplo, os itens de um jogador, os inimigos de u
 
 O diagrama apresenta as entidades, seus atributos, os identificadores (sublinhados), os relacionamentos e as cardinalidades.
 
-- [Visualizar o DER](der.html)
-- [Abrir SVG](der.svg)
+![DER da primeira iteração](der.svg)
 
 ### Entidades
 
