@@ -49,3 +49,18 @@ CREATE TABLE enemy_drop (
     max_quantity integer NOT NULL DEFAULT 1,
     PRIMARY KEY (id_enemy, id_item)
 );
+
+-- id_station nulo significa receita feita à mão.
+CREATE TABLE recipe (
+    id_recipe       serial PRIMARY KEY,
+    id_result       integer NOT NULL REFERENCES item (id_item) ON DELETE CASCADE,
+    result_quantity integer NOT NULL DEFAULT 1,
+    id_station      integer REFERENCES item (id_item)
+);
+
+CREATE TABLE recipe_ingredient (
+    id_recipe     integer REFERENCES recipe (id_recipe) ON DELETE CASCADE,
+    id_ingredient integer REFERENCES item (id_item),
+    quantity      integer NOT NULL,
+    PRIMARY KEY (id_recipe, id_ingredient)
+);
