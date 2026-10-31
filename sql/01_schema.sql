@@ -24,3 +24,10 @@ CREATE TABLE enemy (
     is_invulnerable boolean NOT NULL DEFAULT false,
     lore            text
 );
+
+-- Um inimigo pode habitar vários biomas (relação N:N).
+CREATE TABLE enemy_biome (
+    id_enemy integer REFERENCES enemy (id_enemy) ON DELETE CASCADE,
+    id_biome integer REFERENCES biome (id_biome),
+    PRIMARY KEY (id_enemy, id_biome)
+);
