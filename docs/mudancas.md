@@ -106,3 +106,17 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 **Depois:** `general_stats jsonb` com as chaves `defense`, `life_regen` e `luck`.
 
 **Por quê:** `jsonb` é a forma recomendada pelo PostgreSQL de guardar JSON (binária, indexável e com operadores como `->>`). As chaves foram fixadas para que o conteúdo do campo seja conhecido e possa ser usado nas consultas.
+
+## M10. Ações nas chaves estrangeiras
+
+**Antes:** o diagrama não definia o que acontece ao apagar uma linha referenciada.
+
+**Depois:**
+
+| FK | Ação | Motivo |
+|---|---|---|
+| `inventory.id_player` | `ON DELETE CASCADE` | Apagar um jogador apaga seus inventários. |
+| `inventory_item.id_inventory` | `ON DELETE CASCADE` | Apagar um inventário apaga seus slots. |
+| `enemy_biome.id_enemy`, `enemy_drop.id_enemy` | `ON DELETE CASCADE` | Os biomas e drops de um inimigo só existem por causa dele. |
+| `recipe.id_result`, `recipe_ingredient.id_recipe` | `ON DELETE CASCADE` | As receitas de um item e os ingredientes de uma receita pertencem a eles. |
+| `inventory_item.id_item`, `enemy_drop.id_item`, `recipe_ingredient.id_ingredient`, `recipe.id_station`, `enemy.id_ai`, `enemy_biome.id_biome` | `RESTRICT` (padrão) | Não se pode apagar um item, IA ou bioma que ainda está em uso. |
