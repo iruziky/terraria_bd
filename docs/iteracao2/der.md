@@ -63,4 +63,36 @@ erDiagram
     item |o--o{ recipe : "e estacao de"
     recipe ||--|{ recipe_ingredient : "exige"
     item ||--o{ recipe_ingredient : "participa"
+    player {
+        serial id_player PK
+        text name UK
+        int hp
+        int max_hp
+        int mana
+        int max_mana
+        text class
+        real move_speed
+        real crit_chance
+        boolean is_alive
+        boolean used_demon_heart
+        int coins
+        text team
+        jsonb general_stats
+    }
+    inventory {
+        serial id_inventory PK
+        int id_player FK
+        text type
+        int capacity
+    }
+    inventory_item {
+        int id_inventory PK,FK
+        int slot PK
+        int id_item FK
+        int quantity
+        boolean equipped
+    }
+    player ||--|{ inventory : "possui"
+    inventory ||--o{ inventory_item : "contem"
+    item ||--o{ inventory_item : "ocupa"
 ```
