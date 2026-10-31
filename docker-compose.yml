@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    container_name: terraria_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: terraria
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./sql/02_dados.sql:/docker-entrypoint-initdb.d/02_dados.sql:ro
