@@ -74,3 +74,11 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 **Depois:** nova tabela associativa `enemy_biome (id_enemy, id_biome)` e `enemy` sem `id_biome`.
 
 **Por quê:** ao popular o banco com dados da wiki, vimos que vários inimigos aparecem em mais de um bioma. O Blue Slime aparece na Forest e no Underground, e o Giant Worm no Underground e no Cavern. O modelo 1:N obrigaria a escolher um bioma só ou a duplicar o inimigo.
+
+## M6. Estação de crafting passa a ser um item
+
+**Antes:** `Receita.estacaoCraft VARCHAR`.
+
+**Depois:** `recipe.id_station`, FK para `item`, que pode ser nulo (receita feita à mão).
+
+**Por quê:** as estações (Work Bench, Furnace, Iron Anvil) são itens do jogo e também têm receitas. Com texto livre, `'Work Bench'` e `'workbench'` seriam estações diferentes e não daria para consultar "o que preciso para construir a estação desta receita". Com a FK, a estação é validada e pode ser ligada às outras tabelas. Até um item comum pode ser estação: a Bottle colocada no mundo (Placed Bottle) é a estação das poções.
