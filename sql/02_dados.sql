@@ -209,3 +209,13 @@ INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
     (24, 11, 16),
     (25, 18, 2),
     (26, 19, 2);
+
+-- Jogadores fictícios com os nomes do grupo. coins em moedas de cobre.
+INSERT INTO player (id_player, name, hp, max_hp, mana, max_mana, class, move_speed,
+                    crit_chance, is_alive, used_demon_heart, coins, team, general_stats) VALUES
+    (1, 'Iruziky', 200, 200, 40, 40, 'melee', 1, 0.04, true, false, 54321, 'red',
+        '{"defense": 5, "life_regen": 1, "luck": 0}'),
+    (2, 'Heitor', 140, 160, 20, 20, 'ranged', 1, 0.04, true, false, 12050, 'blue',
+        '{"defense": 1, "life_regen": 0, "luck": 0}'),
+    (3, 'Davi', 0, 300, 100, 120, 'magic', 1, 0.04, false, true, 250000, 'none',
+        '{"defense": 2, "life_regen": 0, "luck": 0.1}');
