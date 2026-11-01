@@ -63,11 +63,27 @@ def show_item_sources(conn):
         show(["Forma", "Origem", "Chance", "Qtd"], operacoes.item_sources(conn, item[0]))
 
 
+def show_recipes(conn):
+    item = ask(conn, "item", "id_item", "Item")
+    if not item:
+        return
+    rows = operacoes.recipes(conn, item[0])
+    if not rows:
+        print(f"{item[1]} não tem receita.")
+        return
+    for id_recipe in dict.fromkeys(row[0] for row in rows):
+        ingredients = [row for row in rows if row[0] == id_recipe]
+        _, result_quantity, station, _, _ = ingredients[0]
+        print(f"\n{result_quantity}x {item[1]} (estação: {station})")
+        show(["Ingrediente", "Qtd"], [(name, quantity) for _, _, _, name, quantity in ingredients])
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
     ("Inimigos de um bioma", show_biome_enemies),
     ("Como obter um item", show_item_sources),
+    ("Ver receita de um item", show_recipes),
 ]
 
 
