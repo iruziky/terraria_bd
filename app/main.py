@@ -78,12 +78,34 @@ def show_recipes(conn):
         show(["Ingrediente", "Qtd"], [(name, quantity) for _, _, _, name, quantity in ingredients])
 
 
+def craft_item(conn):
+    player = ask(conn, "player", "id_player", "Jogador")
+    item = player and ask(conn, "item", "id_item", "Item")
+    if not item:
+        return
+    try:
+        result = operacoes.craft(conn, player[0], item[0])
+    except operacoes.InventoryFullError:
+        print("Inventário principal cheio.")
+        return
+    if result is None:
+        print(f"{item[1]} não tem receita.")
+        return
+    quantity, missing = result
+    if quantity:
+        print(f"{player[1]} fabricou {quantity}x {item[1]}.")
+    else:
+        print(f"{player[1]} não tem os ingredientes necessários no inventário principal:")
+        show(["Ingrediente", "Precisa", "Tem"], missing)
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
     ("Inimigos de um bioma", show_biome_enemies),
     ("Como obter um item", show_item_sources),
     ("Ver receita de um item", show_recipes),
+    ("Fabricar item", craft_item),
 ]
 
 

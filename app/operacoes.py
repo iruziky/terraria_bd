@@ -155,3 +155,46 @@ def remove_item(cur, id_inventory, id_item, quantity):
                 (taken, id_inventory, slot),
             )
         quantity -= taken
+
+
+def missing_ingredients(cur, id_inventory, id_recipe):
+    cur.execute(
+        """
+        SELECT item.name, recipe_ingredient.quantity, coalesce(sum(inventory_item.quantity), 0)
+        FROM recipe_ingredient
+        INNER JOIN item ON item.id_item = recipe_ingredient.id_ingredient
+        LEFT JOIN inventory_item ON inventory_item.id_item = recipe_ingredient.id_ingredient
+                                AND inventory_item.id_inventory = %s
+        WHERE recipe_ingredient.id_recipe = %s
+        GROUP BY item.name, recipe_ingredient.quantity
+        HAVING coalesce(sum(inventory_item.quantity), 0) < recipe_ingredient.quantity
+        """,
+        (id_inventory, id_recipe),
+    )
+    return cur.fetchall()
+
+
+def craft(conn, id_player, id_item):
+    with conn, conn.cursor() as cur:
+        id_inventory, capacity = main_inventory(cur, id_player)
+        cur.execute(
+            "SELECT id_recipe, result_quantity FROM recipe WHERE id_result = %s ORDER BY id_recipe",
+            (id_item,),
+        )
+        options = cur.fetchall()
+        if not options:
+            return None
+        missing = []
+        for id_recipe, result_quantity in options:
+            missing = missing_ingredients(cur, id_inventory, id_recipe)
+            if missing:
+                continue
+            cur.execute(
+                "SELECT id_ingredient, quantity FROM recipe_ingredient WHERE id_recipe = %s",
+                (id_recipe,),
+            )
+            for id_ingredient, quantity in cur.fetchall():
+                remove_item(cur, id_inventory, id_ingredient, quantity)
+            add_item(cur, id_inventory, capacity, id_item, result_quantity)
+            return result_quantity, []
+        return 0, missing
