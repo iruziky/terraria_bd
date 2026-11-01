@@ -80,3 +80,21 @@ def item_sources(conn, id_item):
             (id_item, id_item),
         )
         return cur.fetchall()
+
+
+def recipes(conn, id_item):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT recipe.id_recipe, recipe.result_quantity, coalesce(station.name, 'à mão'),
+                   ingredient.name, recipe_ingredient.quantity
+            FROM recipe
+            INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
+            INNER JOIN item AS ingredient ON ingredient.id_item = recipe_ingredient.id_ingredient
+            LEFT JOIN item AS station ON station.id_item = recipe.id_station
+            WHERE recipe.id_result = %s
+            ORDER BY recipe.id_recipe, ingredient.name
+            """,
+            (id_item,),
+        )
+        return cur.fetchall()
