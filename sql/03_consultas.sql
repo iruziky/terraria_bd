@@ -205,7 +205,7 @@ BEGIN;
 INSERT INTO inventory_item (id_inventory, slot, id_item) VALUES (1, 49, 9999);
 ROLLBACK;
 
--- FOREIGN KEY (RESTRICT): apagar um item que está em inventários.
+-- FOREIGN KEY (RESTRICT): apagar um item que está em uso (inventários e receitas).
 BEGIN;
 DELETE FROM item WHERE name = 'Wood';
 ROLLBACK;
