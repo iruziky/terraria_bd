@@ -51,9 +51,16 @@ def show_inventory(conn):
         show(["Inventário", "Slot", "Item", "Qtd", "Equipado"], rows)
 
 
+def show_biome_enemies(conn):
+    biome = ask(conn, "biome", "id_biome", "Bioma")
+    if biome:
+        show(["Inimigo", "Vida", "Defesa", "IA"], operacoes.biome_enemies(conn, biome[0]))
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
+    ("Inimigos de um bioma", show_biome_enemies),
 ]
 
 

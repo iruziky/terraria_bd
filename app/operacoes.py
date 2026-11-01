@@ -41,3 +41,19 @@ def player_inventory(conn, id_player):
             (id_player,),
         )
         return cur.fetchall()
+
+
+def biome_enemies(conn, id_biome):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT enemy.name, enemy.hp, enemy.defense, ai.name
+            FROM enemy_biome
+            INNER JOIN enemy ON enemy.id_enemy = enemy_biome.id_enemy
+            INNER JOIN ai ON ai.id_ai = enemy.id_ai
+            WHERE enemy_biome.id_biome = %s
+            ORDER BY enemy.name
+            """,
+            (id_biome,),
+        )
+        return cur.fetchall()
