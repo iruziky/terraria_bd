@@ -229,3 +229,30 @@ INSERT INTO inventory (id_inventory, id_player, type, capacity) VALUES
     (9, 2, 'ammo', 4), (10, 2, 'equipment', 9),
     (11, 3, 'main', 50), (12, 3, 'piggy_bank', 40), (13, 3, 'safe', 40),
     (14, 3, 'ammo', 4), (15, 3, 'equipment', 10);
+
+-- Iruziky consegue fabricar a Iron Pickaxe (10 Iron Bar + 3 Wood) e Heitor não.
+-- Heitor consegue fabricar a Lesser Healing Potion e Iruziky não (falta Bottle).
+INSERT INTO inventory_item (id_inventory, slot, id_item, quantity, equipped) VALUES
+    (1, 0, 32, 1, false), (1, 1, 37, 1, false), (1, 2, 6, 45, false),
+    (1, 3, 1, 30, false), (1, 4, 13, 12, false), (1, 5, 5, 14, false),
+    (1, 6, 9, 5, false), (1, 7, 2, 120, false), (1, 8, 18, 3, false),
+    (1, 9, 7, 2, false),
+    (2, 0, 24, 1, false), (2, 1, 23, 4, false),
+    (3, 0, 10, 40, false),
+    (5, 0, 43, 1, true), (5, 1, 44, 1, true), (5, 2, 45, 1, true),
+    (5, 3, 50, 1, true), (5, 4, 49, 1, true),
+
+    (6, 0, 30, 1, false), (6, 1, 37, 1, false), (6, 2, 1, 50, false),
+    (6, 3, 13, 4, false), (6, 4, 6, 20, false), (6, 5, 5, 30, false),
+    (6, 6, 8, 4, false), (6, 7, 7, 3, false), (6, 8, 19, 1, false),
+    (6, 9, 20, 6, false),
+    (7, 0, 4, 10, false),
+    (9, 0, 40, 250, false), (9, 1, 41, 80, false), (9, 2, 42, 100, false),
+    (10, 0, 46, 1, true), (10, 1, 52, 1, true), (10, 2, 39, 1, true),
+
+    (11, 0, 29, 1, false), (11, 1, 14, 15, false), (11, 2, 3, 60, false),
+    (11, 3, 18, 1, false), (11, 4, 21, 8, false), (11, 5, 25, 2, false),
+    (11, 6, 23, 10, false),
+    (13, 0, 15, 4, false), (13, 1, 12, 30, false),
+    (15, 0, 48, 1, true), (15, 1, 51, 1, true), (15, 2, 53, 1, true),
+    (15, 3, 47, 1, false);
