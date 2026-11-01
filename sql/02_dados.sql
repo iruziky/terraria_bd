@@ -169,3 +169,29 @@ INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
     (8, 4, 1),
     (9, 7, 1), (9, 5, 2), (9, 8, 2),
     (10, 14, 3);
+
+INSERT INTO recipe (id_recipe, id_result, result_quantity, id_station) VALUES
+    (11, 29, 1, 26),
+    (12, 30, 1, 26),
+    (13, 40, 25, 26),
+    (14, 41, 10, NULL),
+    (15, 31, 1, 28),
+    (16, 32, 1, 28),
+    (17, 33, 1, 28),
+    (18, 37, 1, 28),
+    (19, 38, 1, 28),
+    (20, 16, 15, 28),
+    (21, 39, 1, 28);
+
+INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
+    (11, 1, 7),
+    (12, 1, 10),
+    (13, 1, 1), (13, 2, 1),
+    (14, 40, 10), (14, 6, 1),
+    (15, 11, 5),
+    (16, 13, 8),
+    (17, 15, 10),
+    (18, 11, 8), (18, 1, 4),
+    (19, 13, 10), (19, 1, 3),
+    (20, 13, 1),
+    (21, 16, 3), (21, 17, 1);
