@@ -98,3 +98,60 @@ def recipes(conn, id_item):
             (id_item,),
         )
         return cur.fetchall()
+
+
+class InventoryFullError(Exception):
+    pass
+
+
+def main_inventory(cur, id_player):
+    cur.execute(
+        "SELECT id_inventory, capacity FROM inventory WHERE id_player = %s AND type = 'main'",
+        (id_player,),
+    )
+    return cur.fetchone()
+
+
+def add_item(cur, id_inventory, capacity, id_item, quantity):
+    cur.execute(
+        "SELECT slot FROM inventory_item WHERE id_inventory = %s AND id_item = %s ORDER BY slot LIMIT 1",
+        (id_inventory, id_item),
+    )
+    row = cur.fetchone()
+    if row:
+        cur.execute(
+            "UPDATE inventory_item SET quantity = quantity + %s WHERE id_inventory = %s AND slot = %s",
+            (quantity, id_inventory, row[0]),
+        )
+        return
+    cur.execute("SELECT slot FROM inventory_item WHERE id_inventory = %s", (id_inventory,))
+    used = {slot for (slot,) in cur.fetchall()}
+    free = next((slot for slot in range(capacity) if slot not in used), None)
+    if free is None:
+        raise InventoryFullError
+    cur.execute(
+        "INSERT INTO inventory_item (id_inventory, slot, id_item, quantity) VALUES (%s, %s, %s, %s)",
+        (id_inventory, free, id_item, quantity),
+    )
+
+
+def remove_item(cur, id_inventory, id_item, quantity):
+    cur.execute(
+        "SELECT slot, quantity FROM inventory_item WHERE id_inventory = %s AND id_item = %s ORDER BY slot",
+        (id_inventory, id_item),
+    )
+    for slot, available in cur.fetchall():
+        if quantity == 0:
+            break
+        taken = min(available, quantity)
+        if taken == available:
+            cur.execute(
+                "DELETE FROM inventory_item WHERE id_inventory = %s AND slot = %s",
+                (id_inventory, slot),
+            )
+        else:
+            cur.execute(
+                "UPDATE inventory_item SET quantity = quantity - %s WHERE id_inventory = %s AND slot = %s",
+                (taken, id_inventory, slot),
+            )
+        quantity -= taken
