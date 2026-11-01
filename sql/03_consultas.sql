@@ -41,3 +41,15 @@ FROM enemy_drop
 INNER JOIN enemy ON enemy.id_enemy = enemy_drop.id_enemy
 INNER JOIN item ON item.id_item = enemy_drop.id_item
 WHERE item.name = 'Hook';
+
+-- 6. Receita da Iron Pickaxe: ingredientes e estação.
+-- A tabela item aparece três vezes (resultado, ingrediente e estação).
+SELECT resultado.name AS resultado, recipe.result_quantity AS produz,
+       ingrediente.name AS ingrediente, recipe_ingredient.quantity AS quantidade,
+       coalesce(estacao.name, 'à mão') AS estacao
+FROM recipe
+INNER JOIN item AS resultado ON resultado.id_item = recipe.id_result
+INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
+INNER JOIN item AS ingrediente ON ingrediente.id_item = recipe_ingredient.id_ingredient
+LEFT JOIN item AS estacao ON estacao.id_item = recipe.id_station
+WHERE resultado.name = 'Iron Pickaxe';
