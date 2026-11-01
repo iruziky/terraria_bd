@@ -157,3 +157,24 @@ FROM biome
 LEFT JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
 GROUP BY biome.name
 ORDER BY inimigos DESC, bioma;
+
+-- 14. Atualização: Iruziky usa uma Life Crystal (+20 de vida máxima)
+-- e ela sai do Piggy Bank.
+BEGIN;
+UPDATE player SET max_hp = max_hp + 20, hp = hp + 20 WHERE name = 'Iruziky';
+DELETE FROM inventory_item
+WHERE id_item = (SELECT id_item FROM item WHERE name = 'Life Crystal')
+  AND id_inventory = (SELECT inventory.id_inventory FROM inventory
+                      INNER JOIN player ON player.id_player = inventory.id_player
+                      WHERE player.name = 'Iruziky' AND inventory.type = 'piggy_bank');
+SELECT name, hp, max_hp FROM player WHERE name = 'Iruziky';
+ROLLBACK;
+
+-- 15. Alteração de tabela: adiciona uma coluna de preço de venda,
+-- preenche e remove (dentro de uma transação, para não alterar o banco).
+BEGIN;
+ALTER TABLE item ADD COLUMN sell_price integer;
+UPDATE item SET sell_price = 0;
+SELECT name, sell_price FROM item LIMIT 3;
+ALTER TABLE item DROP COLUMN sell_price;
+ROLLBACK;
