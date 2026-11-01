@@ -178,3 +178,40 @@ UPDATE item SET sell_price = 0;
 SELECT name, sell_price FROM item LIMIT 3;
 ALTER TABLE item DROP COLUMN sell_price;
 ROLLBACK;
+
+-- 16. Restrições em ação: cada comando abaixo FALHA de propósito.
+-- CHECK: vida maior que a vida máxima.
+BEGIN;
+UPDATE player SET hp = 999 WHERE name = 'Heitor';
+ROLLBACK;
+
+-- CHECK: classe que não existe.
+BEGIN;
+INSERT INTO player (name, hp, max_hp, mana, max_mana, class) VALUES ('Teste', 100, 100, 20, 20, 'ninja');
+ROLLBACK;
+
+-- CHECK: chance de drop acima de 100%.
+BEGIN;
+INSERT INTO enemy_drop (id_enemy, id_item, chance) VALUES (13, 5, 1.5);
+ROLLBACK;
+
+-- UNIQUE: segundo inventário principal para o mesmo jogador.
+BEGIN;
+INSERT INTO inventory (id_player, type, capacity) VALUES (1, 'main', 50);
+ROLLBACK;
+
+-- FOREIGN KEY: item que não existe.
+BEGIN;
+INSERT INTO inventory_item (id_inventory, slot, id_item) VALUES (1, 49, 9999);
+ROLLBACK;
+
+-- FOREIGN KEY (RESTRICT): apagar um item que está em inventários.
+BEGIN;
+DELETE FROM item WHERE name = 'Wood';
+ROLLBACK;
+
+-- ON DELETE CASCADE: apagar um jogador apaga seus inventários e itens.
+BEGIN;
+DELETE FROM player WHERE name = 'Davi';
+SELECT count(*) AS inventarios_do_davi FROM inventory WHERE id_player = 3;
+ROLLBACK;
