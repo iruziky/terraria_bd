@@ -139,3 +139,21 @@ WHERE NOT EXISTS (
     INNER JOIN ingredientes ON ingredientes.id_item = posse.id_item
     WHERE posse.id_player = player.id_player AND posse.quantity >= ingredientes.quantity
 );
+
+-- 12. Tabela temporária: resumo de cada jogador.
+CREATE TEMP TABLE resumo_jogador AS
+    SELECT player.name, count(inventory_item.slot) AS slots_ocupados,
+           coalesce(sum(inventory_item.quantity), 0) AS total_itens
+    FROM player
+    INNER JOIN inventory ON inventory.id_player = player.id_player
+    LEFT JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
+    GROUP BY player.name;
+
+SELECT * FROM resumo_jogador ORDER BY total_itens DESC;
+
+-- 13. Contagens: inimigos por bioma (incluindo biomas sem inimigos).
+SELECT biome.name AS bioma, count(enemy_biome.id_enemy) AS inimigos
+FROM biome
+LEFT JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
+GROUP BY biome.name
+ORDER BY inimigos DESC, bioma;
