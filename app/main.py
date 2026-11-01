@@ -57,10 +57,17 @@ def show_biome_enemies(conn):
         show(["Inimigo", "Vida", "Defesa", "IA"], operacoes.biome_enemies(conn, biome[0]))
 
 
+def show_item_sources(conn):
+    item = ask(conn, "item", "id_item", "Item")
+    if item:
+        show(["Forma", "Origem", "Chance", "Qtd"], operacoes.item_sources(conn, item[0]))
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
     ("Inimigos de um bioma", show_biome_enemies),
+    ("Como obter um item", show_item_sources),
 ]
 
 
