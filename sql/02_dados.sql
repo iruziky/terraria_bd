@@ -104,3 +104,20 @@ INSERT INTO enemy (id_enemy, id_ai, name, hp, defense, does_despawn, lore) VALUE
     (13, 6, 'Giant Worm', 30, 0, true, 'These itty bitty diggy dawgs dig through the earth and take focused spelunkers by surprise, causing unwanted distress.'),
     (14, 16, 'Piranha', 30, 2, true, 'Just one of these sharp-toothed fish can easily end a life. Luckily, they tend to swarm their victims in large groups! Life is grand.'),
     (15, 19, 'Antlion', 45, 6, true, 'When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.');
+
+INSERT INTO enemy_biome (id_enemy, id_biome) VALUES
+    (1, 1),
+    (2, 1), (2, 7),
+    (3, 4),
+    (4, 3),
+    (5, 9),
+    (6, 1),
+    (7, 1),
+    (8, 8),
+    (9, 8),
+    (10, 9),
+    (11, 5),
+    (12, 6),
+    (13, 7), (13, 8),
+    (14, 4), (14, 8),
+    (15, 2);
