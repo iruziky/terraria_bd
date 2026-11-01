@@ -219,3 +219,13 @@ INSERT INTO player (id_player, name, hp, max_hp, mana, max_mana, class, move_spe
         '{"defense": 1, "life_regen": 0, "luck": 0}'),
     (3, 'Davi', 0, 300, 100, 120, 'magic', 1, 0.04, false, true, 250000, 'none',
         '{"defense": 2, "life_regen": 0, "luck": 0.1}');
+
+-- Capacidades do jogo: main 50 (40 + 10 da hotbar), piggy_bank e safe 40,
+-- ammo 4, equipment 9 (3 armaduras + 5 acessórios + 1 gancho; +1 com Demon Heart).
+INSERT INTO inventory (id_inventory, id_player, type, capacity) VALUES
+    (1, 1, 'main', 50), (2, 1, 'piggy_bank', 40), (3, 1, 'safe', 40),
+    (4, 1, 'ammo', 4), (5, 1, 'equipment', 9),
+    (6, 2, 'main', 50), (7, 2, 'piggy_bank', 40), (8, 2, 'safe', 40),
+    (9, 2, 'ammo', 4), (10, 2, 'equipment', 9),
+    (11, 3, 'main', 50), (12, 3, 'piggy_bank', 40), (13, 3, 'safe', 40),
+    (14, 3, 'ammo', 4), (15, 3, 'equipment', 10);
