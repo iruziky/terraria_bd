@@ -143,3 +143,29 @@ INSERT INTO enemy_drop (id_enemy, id_item, chance, min_quantity, max_quantity) V
     (14, 17, 0.033, 1, 1),
     (14, 52, 0.0133, 1, 1),
     (15, 22, 0.333, 1, 2);
+
+-- Estações: 26 = Work Bench, 27 = Furnace, 28 = Iron Anvil,
+-- 8 = Bottle (colocada no mundo, funciona como Placed Bottle). NULL = à mão.
+INSERT INTO recipe (id_recipe, id_result, result_quantity, id_station) VALUES
+    (1, 26, 1, NULL),
+    (2, 6, 3, NULL),
+    (3, 27, 1, 26),
+    (4, 11, 1, 27),
+    (5, 13, 1, 27),
+    (6, 28, 1, 26),
+    (7, 4, 1, 27),
+    (8, 8, 2, 27),
+    (9, 9, 2, 8),
+    (10, 15, 1, 27);
+
+INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
+    (1, 1, 10),
+    (2, 5, 1), (2, 1, 1),
+    (3, 2, 20), (3, 1, 4), (3, 6, 3),
+    (4, 10, 3),
+    (5, 12, 3),
+    (6, 13, 5),
+    (7, 3, 2),
+    (8, 4, 1),
+    (9, 7, 1), (9, 5, 2), (9, 8, 2),
+    (10, 14, 3);
