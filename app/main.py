@@ -99,6 +99,23 @@ def craft_item(conn):
         show(["Ingrediente", "Precisa", "Tem"], missing)
 
 
+def defeat_enemy(conn):
+    player = ask(conn, "player", "id_player", "Jogador")
+    enemy = player and ask(conn, "enemy", "id_enemy", "Inimigo")
+    if not enemy:
+        return
+    try:
+        obtained = operacoes.defeat_enemy(conn, player[0], enemy[0])
+    except operacoes.InventoryFullError:
+        print("Inventário principal cheio. Os drops foram perdidos.")
+        return
+    print(f"{player[1]} derrotou {enemy[1]}.")
+    if obtained:
+        show(["Item obtido", "Qtd"], obtained)
+    else:
+        print("Nenhum item foi dropado.")
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
@@ -106,6 +123,7 @@ MENU = [
     ("Como obter um item", show_item_sources),
     ("Ver receita de um item", show_recipes),
     ("Fabricar item", craft_item),
+    ("Derrotar inimigo", defeat_enemy),
 ]
 
 

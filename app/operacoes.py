@@ -1,3 +1,6 @@
+import random
+
+
 def list_players(conn):
     with conn.cursor() as cur:
         cur.execute(
@@ -198,3 +201,25 @@ def craft(conn, id_player, id_item):
             add_item(cur, id_inventory, capacity, id_item, result_quantity)
             return result_quantity, []
         return 0, missing
+
+
+def defeat_enemy(conn, id_player, id_enemy):
+    with conn, conn.cursor() as cur:
+        id_inventory, capacity = main_inventory(cur, id_player)
+        cur.execute(
+            """
+            SELECT enemy_drop.id_item, item.name, enemy_drop.chance,
+                   enemy_drop.min_quantity, enemy_drop.max_quantity
+            FROM enemy_drop
+            INNER JOIN item ON item.id_item = enemy_drop.id_item
+            WHERE enemy_drop.id_enemy = %s
+            """,
+            (id_enemy,),
+        )
+        obtained = []
+        for id_item, name, chance, minimum, maximum in cur.fetchall():
+            if random.random() < float(chance):
+                quantity = random.randint(minimum, maximum)
+                add_item(cur, id_inventory, capacity, id_item, quantity)
+                obtained.append((name, quantity))
+        return obtained
