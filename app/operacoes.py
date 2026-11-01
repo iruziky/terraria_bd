@@ -64,13 +64,13 @@ def item_sources(conn, id_item):
         cur.execute(
             """
             SELECT 'drop', enemy.name,
-                   round(enemy_drop.chance * 100, 2) || '%',
+                   round(enemy_drop.chance * 100, 2) || '%%',
                    enemy_drop.min_quantity || '-' || enemy_drop.max_quantity
             FROM enemy_drop
             INNER JOIN enemy ON enemy.id_enemy = enemy_drop.id_enemy
             WHERE enemy_drop.id_item = %s
             UNION
-            SELECT 'receita', coalesce(station.name, 'à mão'), '100%',
+            SELECT 'receita', coalesce(station.name, 'à mão'), '100%%',
                    recipe.result_quantity::text
             FROM recipe
             LEFT JOIN item AS station ON station.id_item = recipe.id_station
