@@ -29,8 +29,31 @@ def list_players(conn):
     show(["Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
 
 
+def ask(conn, table, id_column, label):
+    name = input(f"{label}: ").strip()
+    matches = operacoes.find_by_name(conn, table, id_column, name)
+    if not matches:
+        print(f"Nenhum resultado para '{name}'.")
+        return None
+    if len(matches) > 1:
+        print("Mais de um resultado: " + ", ".join(match[1] for match in matches))
+        return None
+    return matches[0]
+
+
+def show_inventory(conn):
+    player = ask(conn, "player", "id_player", "Jogador")
+    if player:
+        rows = [
+            (inventory, slot, item, quantity, "sim" if equipped else "")
+            for inventory, slot, item, quantity, equipped in operacoes.player_inventory(conn, player[0])
+        ]
+        show(["Inventário", "Slot", "Item", "Qtd", "Equipado"], rows)
+
+
 MENU = [
     ("Listar jogadores", list_players),
+    ("Ver inventário de um jogador", show_inventory),
 ]
 
 
