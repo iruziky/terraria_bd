@@ -14,3 +14,30 @@ SELECT name AS jogador,
        mana || '/' || max_mana AS mana,
        general_stats ->> 'defense' AS defesa
 FROM player;
+
+-- 3. Junção de quatro tabelas: inventário completo do Iruziky.
+SELECT inventory.type AS inventario, inventory_item.slot, item.name AS item,
+       inventory_item.quantity AS quantidade, inventory_item.equipped AS equipado
+FROM player
+INNER JOIN inventory ON inventory.id_player = player.id_player
+INNER JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
+INNER JOIN item ON item.id_item = inventory_item.id_item
+WHERE player.name = 'Iruziky'
+ORDER BY inventory.type, inventory_item.slot;
+
+-- 4. Inimigos que habitam o Cavern (passando pela tabela associativa enemy_biome).
+SELECT enemy.name AS inimigo, enemy.hp AS vida, enemy.defense AS defesa, ai.name AS ia
+FROM biome
+INNER JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
+INNER JOIN enemy ON enemy.id_enemy = enemy_biome.id_enemy
+INNER JOIN ai ON ai.id_ai = enemy.id_ai
+WHERE biome.name = 'Cavern';
+
+-- 5. Quais inimigos dropam o Hook e com que chance.
+SELECT enemy.name AS inimigo,
+       round(enemy_drop.chance * 100, 2) || '%' AS chance,
+       enemy_drop.min_quantity || '-' || enemy_drop.max_quantity AS quantidade
+FROM enemy_drop
+INNER JOIN enemy ON enemy.id_enemy = enemy_drop.id_enemy
+INNER JOIN item ON item.id_item = enemy_drop.id_item
+WHERE item.name = 'Hook';
