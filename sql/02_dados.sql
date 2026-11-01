@@ -25,3 +25,31 @@ INSERT INTO ai (id_ai, name, behavior) VALUES
     (14, 'Bat AI', 'Spasmodically flies towards player.'),
     (16, 'Swimming AI', 'Swims back and forth and moves towards the player if they are in water.'),
     (19, 'Antlion AI', 'Looks at player, climbs overlapping blocks, shoots falling sand at nearby players.');
+
+-- Materiais, blocos e consumíveis.
+INSERT INTO item (id_item, name, type, rarity, damage) VALUES
+    (1, 'Wood', 'block', 'White', NULL),
+    (2, 'Stone Block', 'block', 'White', NULL),
+    (3, 'Sand Block', 'block', 'White', NULL),
+    (4, 'Glass', 'block', 'White', NULL),
+    (5, 'Gel', 'material', 'White', NULL),
+    (6, 'Torch', 'material', 'White', NULL),
+    (7, 'Mushroom', 'consumable', 'White', NULL),
+    (8, 'Bottle', 'material', 'White', NULL),
+    (9, 'Lesser Healing Potion', 'consumable', 'White', NULL),
+    (10, 'Copper Ore', 'material', 'White', NULL),
+    (11, 'Copper Bar', 'material', 'White', NULL),
+    (12, 'Iron Ore', 'material', 'White', NULL),
+    (13, 'Iron Bar', 'material', 'White', NULL),
+    (14, 'Demonite Ore', 'material', 'Blue', NULL),
+    (15, 'Demonite Bar', 'material', 'Blue', NULL),
+    (16, 'Chain', 'material', 'White', NULL),
+    (17, 'Hook', 'material', 'White', NULL),
+    (18, 'Lens', 'material', 'White', NULL),
+    (19, 'Black Lens', 'material', 'White', NULL),
+    (20, 'Rotten Chunk', 'material', 'White', NULL),
+    (21, 'Vertebra', 'material', 'White', NULL),
+    (22, 'Antlion Mandible', 'material', 'White', NULL),
+    (23, 'Fallen Star', 'material', 'Blue', NULL),
+    (24, 'Life Crystal', 'consumable', 'Green', NULL),
+    (25, 'Mana Crystal', 'consumable', 'Green', NULL);
