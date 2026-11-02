@@ -251,13 +251,14 @@ def fight_enemy(conn, id_player, id_enemy):
     with conn, conn.cursor() as cur:
         cur.execute(
             """
-            SELECT hp, is_alive, crit_chance, coalesce((general_stats ->> 'defense')::int, 0)
+            SELECT hp, max_hp, is_alive, crit_chance,
+                   coalesce((general_stats ->> 'defense')::int, 0)
             FROM player
             WHERE id_player = %s
             """,
             (id_player,),
         )
-        hp, alive, crit_chance, defense = cur.fetchone()
+        hp, max_hp, alive, crit_chance, defense = cur.fetchone()
         if not alive:
             raise DeadPlayerError
         cur.execute(
@@ -277,21 +278,22 @@ def fight_enemy(conn, id_player, id_enemy):
             raise NoWeaponError
         weapon_name, weapon_damage = weapon
         cur.execute("SELECT hp, defense, damage FROM enemy WHERE id_enemy = %s", (id_enemy,))
-        enemy_hp, enemy_defense, enemy_damage = cur.fetchone()
-        turns = dealt = taken = crits = 0
+        enemy_max_hp, enemy_defense, enemy_damage = cur.fetchone()
+        enemy_hp = enemy_max_hp
+        start_hp = hp
+        log = []
         while True:
-            turns += 1
             hit = roll_damage(weapon_damage, enemy_defense)
-            if random.random() < crit_chance:
+            critical = random.random() < crit_chance
+            if critical:
                 hit *= 2
-                crits += 1
-            dealt += hit
-            enemy_hp -= hit
-            if enemy_hp <= 0:
+            enemy_hp = max(0, enemy_hp - hit)
+            log.append(("player", hit, critical, enemy_hp))
+            if enemy_hp == 0:
                 break
-            hit = min(hp, roll_damage(enemy_damage, defense))
-            taken += hit
-            hp -= hit
+            hit = roll_damage(enemy_damage, defense)
+            hp = max(0, hp - hit)
+            log.append(("enemy", hit, False, hp))
             if hp == 0:
                 break
         cur.execute(
@@ -314,16 +316,20 @@ def fight_enemy(conn, id_player, id_enemy):
             for id_item, name, chance, minimum, maximum in cur.fetchall():
                 if random.random() < float(chance):
                     quantity = random.randint(minimum, maximum)
-                    add_item(cur, id_inventory, capacity, id_item, quantity)
-                    obtained.append((name, quantity))
+                    slot, total = add_item(cur, id_inventory, capacity, id_item, quantity)
+                    obtained.append((name, quantity, slot, total))
         return {
             "won": hp > 0,
             "weapon": weapon_name,
-            "turns": turns,
-            "dealt": dealt,
-            "crits": crits,
-            "taken": taken,
+            "weapon_damage": weapon_damage,
+            "start_hp": start_hp,
             "hp": hp,
+            "max_hp": max_hp,
+            "defense": defense,
+            "enemy_hp": enemy_max_hp,
+            "enemy_defense": enemy_defense,
+            "enemy_damage": enemy_damage,
+            "log": log,
             "drops": obtained,
         }
 
