@@ -49,6 +49,7 @@ def ask(conn, table, id_column, label):
 def show_inventory(conn):
     player = ask(conn, "player", "id_player", "Jogador")
     if player:
+        print(f"\nInventário de {player[1]}:")
         rows = [
             (inventory, slot, id_item, item, quantity, "sim" if equipped else "")
             for inventory, slot, id_item, item, quantity, equipped in operacoes.player_inventory(conn, player[0])
@@ -59,12 +60,14 @@ def show_inventory(conn):
 def show_biome_enemies(conn):
     biome = ask(conn, "biome", "id_biome", "Bioma")
     if biome:
+        print(f"\nInimigos que habitam {biome[1]}:")
         show(["Id", "Inimigo", "Vida", "Defesa", "IA"], operacoes.biome_enemies(conn, biome[0]))
 
 
 def show_item_sources(conn):
     item = ask(conn, "item", "id_item", "Item")
     if item:
+        print(f"\nFormas de obter {item[1]}:")
         show(["Forma", "Origem", "Chance", "Qtd"], operacoes.item_sources(conn, item[0]))
 
 
@@ -79,7 +82,7 @@ def show_recipes(conn):
     for id_recipe in dict.fromkeys(row[0] for row in rows):
         ingredients = [row for row in rows if row[0] == id_recipe]
         _, result_quantity, station, _, _, _ = ingredients[0]
-        print(f"\n{result_quantity}x {item[1]} (estação: {station})")
+        print(f"\nReceita: {result_quantity}x {item[1]} (estação: {station})")
         show(["Id", "Ingrediente", "Qtd"], [row[3:] for row in ingredients])
 
 
