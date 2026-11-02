@@ -13,3 +13,22 @@ Cada jogador tem atributos como vida, mana, classe e time, e possui um inventár
 Cada inimigo segue um padrão de IA, habita um ou mais biomas e pode dropar vários itens, cada um com chance e quantidade mínima e máxima. Um item pode ser fabricado por receitas, que exigem ingredientes e, em geral, uma estação de crafting (que também é um item).
 
 Os dados do jogo foram retirados da [Terraria Wiki](https://terraria.wiki.gg) (versão PC, modo Classic, pré-Hardmode). Os jogadores e inventários são fictícios.
+
+## Estrutura
+
+```
+docs/
+  iteracao1/               entrega do trabalho 1 (minimundo, DER e justificativas)
+  iteracao2/der.dot        código Graphviz do DER da segunda iteração
+  iteracao2/der.svg        DER da segunda iteração
+sql/
+  01_schema.sql            criação das tabelas e restrições
+  02_dados.sql             população do banco
+  03_consultas.sql         exemplos de consultas
+app/                       aplicação de terminal em Python
+docker-compose.yml         PostgreSQL 16 já criado e populado
+```
+
+## DER
+
+O DER da segunda iteração, com as cardinalidades, está em [`docs/iteracao2/der.svg`](docs/iteracao2/der.svg), e o código Graphviz que o gera em [`docs/iteracao2/der.dot`](docs/iteracao2/der.dot).
