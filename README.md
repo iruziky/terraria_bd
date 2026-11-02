@@ -85,5 +85,6 @@ Menu:
 6. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
 7. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
 8. **Listar biomas**: todos os biomas, com a quantidade de inimigos de cada um.
+9. **Listar itens**: todos os itens, com tipo, raridade e dano.
 
 As buscas aceitam parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `iron pick`).

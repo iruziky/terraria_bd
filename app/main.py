@@ -120,6 +120,10 @@ def list_biomes(conn):
     show(["Bioma", "Inimigos"], operacoes.list_biomes(conn))
 
 
+def list_items(conn):
+    show(["Item", "Tipo", "Raridade", "Dano"], operacoes.list_items(conn))
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
@@ -129,6 +133,7 @@ MENU = [
     ("Fabricar item", craft_item),
     ("Derrotar inimigo", defeat_enemy),
     ("Listar biomas", list_biomes),
+    ("Listar itens", list_items),
 ]
 
 
