@@ -88,4 +88,4 @@ Menu, com as listagens primeiro e depois as consultas e ações:
 9. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
 10. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
 
-As buscas aceitam parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `iron pick`).
+As buscas aceitam o id (mostrado nas listagens) ou parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `38` ou `iron pick`).
