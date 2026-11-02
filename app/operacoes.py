@@ -5,7 +5,7 @@ def list_players(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT name, hp || '/' || max_hp, mana || '/' || max_mana, class, team,
+            SELECT id_player, name, hp || '/' || max_hp, mana || '/' || max_mana, class, team,
                    is_alive, coins, general_stats ->> 'defense'
             FROM player
             ORDER BY id_player
@@ -235,7 +235,7 @@ def list_biomes(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT biome.name, count(enemy_biome.id_enemy)
+            SELECT biome.id_biome, biome.name, count(enemy_biome.id_enemy)
             FROM biome
             LEFT JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
             GROUP BY biome.id_biome, biome.name
@@ -247,7 +247,7 @@ def list_biomes(conn):
 
 def list_items(conn):
     with conn.cursor() as cur:
-        cur.execute("SELECT name, type, rarity, damage FROM item ORDER BY type, name")
+        cur.execute("SELECT id_item, name, type, rarity, damage FROM item ORDER BY id_item")
         return cur.fetchall()
 
 
@@ -255,14 +255,14 @@ def list_enemies(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT enemy.name, enemy.hp, enemy.defense, ai.name,
+            SELECT enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name,
                    string_agg(biome.name, ', ' ORDER BY biome.name)
             FROM enemy
             INNER JOIN ai ON ai.id_ai = enemy.id_ai
             LEFT JOIN enemy_biome ON enemy_biome.id_enemy = enemy.id_enemy
             LEFT JOIN biome ON biome.id_biome = enemy_biome.id_biome
             GROUP BY enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name
-            ORDER BY enemy.name
+            ORDER BY enemy.id_enemy
             """
         )
         return cur.fetchall()
