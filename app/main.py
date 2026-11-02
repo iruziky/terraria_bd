@@ -39,8 +39,10 @@ def ask(conn, table, id_column, label):
         print(f"Nenhum resultado para '{name}'.")
         return None
     if len(matches) > 1:
-        print("Mais de um resultado: " + ", ".join(match[1] for match in matches))
+        print("Mais de um resultado. Digite o id de um deles:")
+        show(["Id", label], matches)
         return None
+    print(f"  → {label}: {matches[0][1]} (id {matches[0][0]})")
     return matches[0]
 
 
