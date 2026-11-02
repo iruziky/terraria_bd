@@ -35,7 +35,7 @@ def player_inventory(conn, id_player):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT inventory.type, inventory_item.slot, item.name,
+            SELECT inventory.type, inventory_item.slot, item.id_item, item.name,
                    inventory_item.quantity, inventory_item.equipped
             FROM inventory
             INNER JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
@@ -56,7 +56,7 @@ def biome_enemies(conn, id_biome):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT enemy.name, enemy.hp, enemy.defense, ai.name
+            SELECT enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name
             FROM enemy_biome
             INNER JOIN enemy ON enemy.id_enemy = enemy_biome.id_enemy
             INNER JOIN ai ON ai.id_ai = enemy.id_ai
@@ -96,7 +96,7 @@ def recipes(conn, id_item):
         cur.execute(
             """
             SELECT recipe.id_recipe, recipe.result_quantity, coalesce(station.name, 'à mão'),
-                   ingredient.name, recipe_ingredient.quantity
+                   ingredient.id_item, ingredient.name, recipe_ingredient.quantity
             FROM recipe
             INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
             INNER JOIN item AS ingredient ON ingredient.id_item = recipe_ingredient.id_ingredient
