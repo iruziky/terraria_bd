@@ -14,6 +14,12 @@ def list_players(conn):
         return cur.fetchall()
 
 
+def find_by_id(conn, table, id_column, id_value):
+    with conn.cursor() as cur:
+        cur.execute(f"SELECT {id_column}, name FROM {table} WHERE {id_column} = %s", (id_value,))
+        return cur.fetchall()
+
+
 def find_by_name(conn, table, id_column, name):
     with conn.cursor() as cur:
         cur.execute(

@@ -30,8 +30,11 @@ def list_players(conn):
 
 
 def ask(conn, table, id_column, label):
-    name = input(f"{label}: ").strip()
-    matches = operacoes.find_by_name(conn, table, id_column, name)
+    name = input(f"{label} (nome ou id): ").strip()
+    if name.isdigit():
+        matches = operacoes.find_by_id(conn, table, id_column, int(name))
+    else:
+        matches = operacoes.find_by_name(conn, table, id_column, name)
     if not matches:
         print(f"Nenhum resultado para '{name}'.")
         return None
