@@ -23,10 +23,10 @@ def format_coins(copper):
 
 def list_players(conn):
     rows = [
-        (name, hp, mana, player_class, team, "sim" if alive else "não", format_coins(coins), defense)
-        for name, hp, mana, player_class, team, alive, coins, defense in operacoes.list_players(conn)
+        (id_player, name, hp, mana, player_class, team, "sim" if alive else "não", format_coins(coins), defense)
+        for id_player, name, hp, mana, player_class, team, alive, coins, defense in operacoes.list_players(conn)
     ]
-    show(["Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
+    show(["Id", "Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
 
 
 def ask(conn, table, id_column, label):
@@ -120,15 +120,15 @@ def defeat_enemy(conn):
 
 
 def list_biomes(conn):
-    show(["Bioma", "Inimigos"], operacoes.list_biomes(conn))
+    show(["Id", "Bioma", "Inimigos"], operacoes.list_biomes(conn))
 
 
 def list_items(conn):
-    show(["Item", "Tipo", "Raridade", "Dano"], operacoes.list_items(conn))
+    show(["Id", "Item", "Tipo", "Raridade", "Dano"], operacoes.list_items(conn))
 
 
 def list_enemies(conn):
-    show(["Inimigo", "Vida", "Defesa", "IA", "Biomas"], operacoes.list_enemies(conn))
+    show(["Id", "Inimigo", "Vida", "Defesa", "IA", "Biomas"], operacoes.list_enemies(conn))
 
 
 MENU = [
