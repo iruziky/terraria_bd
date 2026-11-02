@@ -19,6 +19,7 @@ erDiagram
         text name UK
         bigint hp
         int defense
+        int damage
         real move_speed
         boolean does_enrage
         boolean does_despawn
