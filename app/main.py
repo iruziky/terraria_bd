@@ -130,15 +130,15 @@ def list_enemies(conn):
 
 MENU = [
     ("Listar jogadores", list_players),
+    ("Listar biomas", list_biomes),
+    ("Listar itens", list_items),
+    ("Listar inimigos", list_enemies),
     ("Ver inventário de um jogador", show_inventory),
     ("Inimigos de um bioma", show_biome_enemies),
     ("Como obter um item", show_item_sources),
     ("Ver receita de um item", show_recipes),
     ("Fabricar item", craft_item),
     ("Derrotar inimigo", defeat_enemy),
-    ("Listar biomas", list_biomes),
-    ("Listar itens", list_items),
-    ("Listar inimigos", list_enemies),
 ]
 
 
