@@ -75,17 +75,17 @@ python3 -m venv .venv
 cd app && ../.venv/bin/python main.py
 ```
 
-Menu:
+Menu, com as listagens primeiro e depois as consultas e ações:
 
 1. **Listar jogadores**: vida, mana, classe, time, moedas e defesa.
-2. **Ver inventário de um jogador**: todos os inventários, slot a slot.
-3. **Inimigos de um bioma.**
-4. **Como obter um item**: drops (com chance) e receitas.
-5. **Ver receita de um item**: ingredientes e estação.
-6. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
-7. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
-8. **Listar biomas**: todos os biomas, com a quantidade de inimigos de cada um.
-9. **Listar itens**: todos os itens, com tipo, raridade e dano.
-10. **Listar inimigos**: todos os inimigos, com vida, defesa, IA e biomas.
+2. **Listar biomas**: todos os biomas, com a quantidade de inimigos de cada um.
+3. **Listar itens**: todos os itens, com tipo, raridade e dano.
+4. **Listar inimigos**: todos os inimigos, com vida, defesa, IA e biomas.
+5. **Ver inventário de um jogador**: todos os inventários, slot a slot.
+6. **Inimigos de um bioma.**
+7. **Como obter um item**: drops (com chance) e receitas.
+8. **Ver receita de um item**: ingredientes e estação.
+9. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
+10. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
 
 As buscas aceitam parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `iron pick`).
