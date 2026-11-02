@@ -237,3 +237,9 @@ def list_biomes(conn):
             """
         )
         return cur.fetchall()
+
+
+def list_items(conn):
+    with conn.cursor() as cur:
+        cur.execute("SELECT name, type, rarity, damage FROM item ORDER BY type, name")
+        return cur.fetchall()
