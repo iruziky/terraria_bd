@@ -102,19 +102,32 @@ def craft_item(conn):
         show(["Ingrediente", "Precisa", "Tem"], missing)
 
 
-def defeat_enemy(conn):
+def fight_enemy(conn):
     player = ask(conn, "player", "id_player", "Jogador")
     enemy = player and ask(conn, "enemy", "id_enemy", "Inimigo")
     if not enemy:
         return
     try:
-        obtained = operacoes.defeat_enemy(conn, player[0], enemy[0])
+        result = operacoes.fight_enemy(conn, player[0], enemy[0])
+    except operacoes.DeadPlayerError:
+        print(f"{player[1]} está morto e não pode lutar.")
+        return
+    except operacoes.NoWeaponError:
+        print(f"{player[1]} não tem nenhuma arma no inventário principal.")
+        return
     except operacoes.InventoryFullError:
-        print("Inventário principal cheio. Os drops foram perdidos.")
+        print("Inventário principal cheio. A luta foi cancelada.")
+        return
+    show(
+        ["Arma", "Turnos", "Dano causado", "Críticos", "Dano recebido", "Vida restante"],
+        [(result["weapon"], result["turns"], result["dealt"], result["crits"], result["taken"], result["hp"])],
+    )
+    if not result["won"]:
+        print(f"{player[1]} foi derrotado por {enemy[1]} e morreu.")
         return
     print(f"{player[1]} derrotou {enemy[1]}.")
-    if obtained:
-        show(["Item obtido", "Qtd"], obtained)
+    if result["drops"]:
+        show(["Item obtido", "Qtd"], result["drops"])
     else:
         print("Nenhum item foi dropado.")
 
@@ -141,7 +154,7 @@ MENU = [
     ("Como obter um item", show_item_sources),
     ("Ver receita de um item", show_recipes),
     ("Fabricar item", craft_item),
-    ("Derrotar inimigo", defeat_enemy),
+    ("Lutar contra um inimigo", fight_enemy),
 ]
 
 

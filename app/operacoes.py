@@ -1,3 +1,4 @@
+import math
 import random
 
 
@@ -209,26 +210,98 @@ def craft(conn, id_player, id_item):
         return 0, missing
 
 
-def defeat_enemy(conn, id_player, id_enemy):
+class DeadPlayerError(Exception):
+    pass
+
+
+class NoWeaponError(Exception):
+    pass
+
+
+def roll_damage(damage, defense):
+    varied = round(damage * random.uniform(0.85, 1.15))
+    return max(1, math.floor(varied - defense * 0.5))
+
+
+def fight_enemy(conn, id_player, id_enemy):
     with conn, conn.cursor() as cur:
-        id_inventory, capacity = main_inventory(cur, id_player)
         cur.execute(
             """
-            SELECT enemy_drop.id_item, item.name, enemy_drop.chance,
-                   enemy_drop.min_quantity, enemy_drop.max_quantity
-            FROM enemy_drop
-            INNER JOIN item ON item.id_item = enemy_drop.id_item
-            WHERE enemy_drop.id_enemy = %s
+            SELECT hp, is_alive, crit_chance, coalesce((general_stats ->> 'defense')::int, 0)
+            FROM player
+            WHERE id_player = %s
             """,
-            (id_enemy,),
+            (id_player,),
+        )
+        hp, alive, crit_chance, defense = cur.fetchone()
+        if not alive:
+            raise DeadPlayerError
+        cur.execute(
+            """
+            SELECT item.name, item.damage
+            FROM inventory
+            INNER JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
+            INNER JOIN item ON item.id_item = inventory_item.id_item
+            WHERE inventory.id_player = %s AND inventory.type = 'main' AND item.type = 'weapon'
+            ORDER BY item.damage DESC
+            LIMIT 1
+            """,
+            (id_player,),
+        )
+        weapon = cur.fetchone()
+        if weapon is None:
+            raise NoWeaponError
+        weapon_name, weapon_damage = weapon
+        cur.execute("SELECT hp, defense, damage FROM enemy WHERE id_enemy = %s", (id_enemy,))
+        enemy_hp, enemy_defense, enemy_damage = cur.fetchone()
+        turns = dealt = taken = crits = 0
+        while True:
+            turns += 1
+            hit = roll_damage(weapon_damage, enemy_defense)
+            if random.random() < crit_chance:
+                hit *= 2
+                crits += 1
+            dealt += hit
+            enemy_hp -= hit
+            if enemy_hp <= 0:
+                break
+            hit = min(hp, roll_damage(enemy_damage, defense))
+            taken += hit
+            hp -= hit
+            if hp == 0:
+                break
+        cur.execute(
+            "UPDATE player SET hp = %s, is_alive = %s WHERE id_player = %s",
+            (hp, hp > 0, id_player),
         )
         obtained = []
-        for id_item, name, chance, minimum, maximum in cur.fetchall():
-            if random.random() < float(chance):
-                quantity = random.randint(minimum, maximum)
-                add_item(cur, id_inventory, capacity, id_item, quantity)
-                obtained.append((name, quantity))
-        return obtained
+        if hp > 0:
+            id_inventory, capacity = main_inventory(cur, id_player)
+            cur.execute(
+                """
+                SELECT enemy_drop.id_item, item.name, enemy_drop.chance,
+                       enemy_drop.min_quantity, enemy_drop.max_quantity
+                FROM enemy_drop
+                INNER JOIN item ON item.id_item = enemy_drop.id_item
+                WHERE enemy_drop.id_enemy = %s
+                """,
+                (id_enemy,),
+            )
+            for id_item, name, chance, minimum, maximum in cur.fetchall():
+                if random.random() < float(chance):
+                    quantity = random.randint(minimum, maximum)
+                    add_item(cur, id_inventory, capacity, id_item, quantity)
+                    obtained.append((name, quantity))
+        return {
+            "won": hp > 0,
+            "weapon": weapon_name,
+            "turns": turns,
+            "dealt": dealt,
+            "crits": crits,
+            "taken": taken,
+            "hp": hp,
+            "drops": obtained,
+        }
 
 
 def list_biomes(conn):

@@ -120,3 +120,21 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 | `enemy_biome.id_enemy`, `enemy_drop.id_enemy` | `ON DELETE CASCADE` | Os biomas e drops de um inimigo só existem por causa dele. |
 | `recipe.id_result`, `recipe_ingredient.id_recipe` | `ON DELETE CASCADE` | As receitas de um item e os ingredientes de uma receita pertencem a eles. |
 | `inventory_item.id_item`, `enemy_drop.id_item`, `recipe_ingredient.id_ingredient`, `recipe.id_station`, `enemy.id_ai`, `enemy_biome.id_biome` | `RESTRICT` (padrão) | Não se pode apagar um item, IA ou bioma que ainda está em uso. |
+
+## M11. Dano dos inimigos e combate
+
+**Antes:** `Inimigo` não tinha dano. Derrotar um inimigo, na aplicação, só sorteava os drops.
+
+**Depois:** nova coluna `enemy.damage` (dano de contato no modo Classic, retirado da wiki), com `CHECK (damage >= 0)`. A aplicação simula a luta com essa coluna, a defesa dos dois lados e a `crit_chance` do jogador. A vida do jogador muda de verdade no banco e ele pode morrer.
+
+**Por quê:** sem o dano do inimigo, não havia como a luta afetar o jogador, e as colunas `hp`, `is_alive` e `crit_chance` ficavam sem uso.
+
+Regras do combate (fórmulas das páginas [Defense](https://terraria.wiki.gg/wiki/Defense) e [Damage](https://terraria.wiki.gg/wiki/Damage) da wiki; a luta em turnos é uma simplificação nossa):
+
+- Jogador morto (`is_alive = false`) não pode lutar, e jogador sem arma no inventário principal também não.
+- O jogador usa a arma de maior dano do inventário principal. Munição e velocidade de ataque não são consideradas.
+- A luta é em turnos: o jogador ataca primeiro e depois o inimigo, até um dos dois chegar a 0 de vida.
+- Dano de cada golpe: o dano base varia ±15%, é arredondado e então reduzido em metade da defesa de quem recebe, com mínimo de 1.
+- Um golpe do jogador é crítico com probabilidade `crit_chance` e, nesse caso, causa o dobro do dano.
+- A defesa do jogador é a chave `defense` de `general_stats`.
+- Se o jogador vence, a vida que sobrou é gravada e os drops são sorteados. Se perde, fica com `hp = 0` e `is_alive = false` e não ganha nada.

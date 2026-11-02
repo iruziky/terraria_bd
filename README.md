@@ -86,6 +86,6 @@ Menu, com as listagens primeiro e depois as consultas e ações:
 7. **Como obter um item**: drops (com chance) e receitas.
 8. **Ver receita de um item**: ingredientes e estação.
 9. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
-10. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
+10. **Lutar contra um inimigo**: luta em turnos com a arma mais forte do inventário principal, usando o dano e a defesa dos dois lados e a chance de crítico do jogador. A vida do jogador é atualizada no banco. Se ele vence, os drops são sorteados e guardados no inventário principal. Se perde, morre (`is_alive = false`) e não pode mais lutar. As regras estão em [`docs/mudancas.md`](docs/mudancas.md#m11-dano-dos-inimigos-e-combate).
 
 As buscas aceitam o id (mostrado nas listagens) ou parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `38` ou `iron pick`).
