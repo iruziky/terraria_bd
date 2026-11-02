@@ -109,6 +109,9 @@ def defeat_enemy(conn):
         return
     try:
         obtained = operacoes.defeat_enemy(conn, player[0], enemy[0])
+    except operacoes.DeadPlayerError:
+        print(f"{player[1]} está morto e não pode lutar.")
+        return
     except operacoes.InventoryFullError:
         print("Inventário principal cheio. Os drops foram perdidos.")
         return

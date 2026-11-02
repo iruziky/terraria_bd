@@ -209,8 +209,15 @@ def craft(conn, id_player, id_item):
         return 0, missing
 
 
+class DeadPlayerError(Exception):
+    pass
+
+
 def defeat_enemy(conn, id_player, id_enemy):
     with conn, conn.cursor() as cur:
+        cur.execute("SELECT is_alive FROM player WHERE id_player = %s", (id_player,))
+        if not cur.fetchone()[0]:
+            raise DeadPlayerError
         id_inventory, capacity = main_inventory(cur, id_player)
         cur.execute(
             """
