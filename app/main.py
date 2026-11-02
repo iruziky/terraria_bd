@@ -99,12 +99,13 @@ def craft_item(conn):
     if result is None:
         print(f"{item[1]} não tem receita.")
         return
-    quantity, missing = result
-    if quantity:
-        print(f"{player[1]} fabricou {quantity}x {item[1]}.")
-    else:
-        print(f"{player[1]} não tem os ingredientes necessários no inventário principal:")
-        show(["Ingrediente", "Precisa", "Tem"], missing)
+    if not result["quantity"]:
+        print(f"{player[1]} não pode fabricar {item[1]}: faltam ingredientes no inventário principal.")
+        show(["Ingrediente", "Precisa", "Tem"], result["missing"])
+        return
+    print(f"{player[1]} fabricou {result['quantity']}x {item[1]} (estação: {result['station']}).")
+    print("Ingredientes gastos: " + ", ".join(f"{quantity}x {name}" for name, quantity in result["consumed"]))
+    print(f"{item[1]} foi guardado no slot {result['slot']} do inventário principal (agora tem {result['total']}).")
 
 
 def fight_enemy(conn):
