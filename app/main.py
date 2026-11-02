@@ -124,18 +124,28 @@ def fight_enemy(conn):
     except operacoes.InventoryFullError:
         print("Inventário principal cheio. A luta foi cancelada.")
         return
-    show(
-        ["Arma", "Turnos", "Dano causado", "Críticos", "Dano recebido", "Vida restante"],
-        [(result["weapon"], result["turns"], result["dealt"], result["crits"], result["taken"], result["hp"])],
+    name, enemy_name = player[1], enemy[1]
+    print(
+        f"\n{name} ({result['start_hp']}/{result['max_hp']} de vida, defesa {result['defense']}) "
+        f"enfrenta {enemy_name} ({result['enemy_hp']} de vida, defesa {result['enemy_defense']}, "
+        f"dano {result['enemy_damage']}) usando {result['weapon']} (dano {result['weapon_damage']})."
     )
+    turn = 0
+    for attacker, hit, critical, remaining in result["log"]:
+        if attacker == "player":
+            turn += 1
+            extra = " (crítico!)" if critical else ""
+            print(f"Turno {turn}: {name} causa {hit} de dano{extra}. {enemy_name}: {remaining}/{result['enemy_hp']}.")
+        else:
+            print(f"{' ' * len(f'Turno {turn}: ')}{enemy_name} causa {hit} de dano. {name}: {remaining}/{result['max_hp']}.")
     if not result["won"]:
-        print(f"{player[1]} foi derrotado por {enemy[1]} e morreu.")
+        print(f"\n{name} foi derrotado por {enemy_name} e morreu. Nenhum item foi obtido.")
         return
-    print(f"{player[1]} derrotou {enemy[1]}.")
-    if result["drops"]:
-        show(["Item obtido", "Qtd"], result["drops"])
-    else:
-        print("Nenhum item foi dropado.")
+    print(f"\n{name} derrotou {enemy_name} em {turn} turnos e ficou com {result['hp']}/{result['max_hp']} de vida.")
+    if not result["drops"]:
+        print(f"{enemy_name} não dropou nenhum item.")
+    for item, quantity, slot, total in result["drops"]:
+        print(f"Drop: {quantity}x {item}, guardado no slot {slot} do inventário principal (agora tem {total}).")
 
 
 def list_biomes(conn):
