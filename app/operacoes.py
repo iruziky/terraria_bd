@@ -243,3 +243,20 @@ def list_items(conn):
     with conn.cursor() as cur:
         cur.execute("SELECT name, type, rarity, damage FROM item ORDER BY type, name")
         return cur.fetchall()
+
+
+def list_enemies(conn):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT enemy.name, enemy.hp, enemy.defense, ai.name,
+                   string_agg(biome.name, ', ' ORDER BY biome.name)
+            FROM enemy
+            INNER JOIN ai ON ai.id_ai = enemy.id_ai
+            LEFT JOIN enemy_biome ON enemy_biome.id_enemy = enemy.id_enemy
+            LEFT JOIN biome ON biome.id_biome = enemy_biome.id_biome
+            GROUP BY enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name
+            ORDER BY enemy.name
+            """
+        )
+        return cur.fetchall()

@@ -86,5 +86,6 @@ Menu:
 7. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
 8. **Listar biomas**: todos os biomas, com a quantidade de inimigos de cada um.
 9. **Listar itens**: todos os itens, com tipo, raridade e dano.
+10. **Listar inimigos**: todos os inimigos, com vida, defesa, IA e biomas.
 
 As buscas aceitam parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `iron pick`).
