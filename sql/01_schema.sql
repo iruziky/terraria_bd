@@ -23,6 +23,7 @@ CREATE TABLE enemy (
     name            text NOT NULL UNIQUE,
     hp              bigint NOT NULL,
     defense         integer NOT NULL,
+    damage          integer NOT NULL,
     move_speed      real,
     does_enrage     boolean NOT NULL DEFAULT false,
     does_despawn    boolean NOT NULL DEFAULT false,
@@ -30,6 +31,7 @@ CREATE TABLE enemy (
     lore            text,
     CHECK (hp > 0),
     CHECK (defense >= 0),
+    CHECK (damage >= 0),
     CHECK (move_speed >= 0)
 );
 

@@ -85,25 +85,26 @@ INSERT INTO item (id_item, name, type, rarity, damage) VALUES
     (52, 'Compass', 'accessory', 'Blue', NULL),
     (53, 'Magma Stone', 'accessory', 'Orange', NULL);
 
--- Vida e defesa no modo Classic; lore é a entrada do Bestiário.
+-- Vida, defesa e dano de contato no modo Classic; lore é a entrada do Bestiário.
+-- Antlion: o dano é o do ataque de areia, porque ele não se move.
 -- move_speed fica nulo porque a wiki não informa a velocidade dos inimigos.
--- Giant Worm: defesa da cabeça (o corpo tem 4 e a cauda 6).
-INSERT INTO enemy (id_enemy, id_ai, name, hp, defense, does_despawn, lore) VALUES
-    (1, 1, 'Green Slime', 14, 0, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
-    (2, 1, 'Blue Slime', 25, 2, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
-    (3, 1, 'Jungle Slime', 60, 6, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
-    (4, 1, 'Ice Slime', 30, 4, true, 'Slimes that spent too long in arctic temperatures may begin to partially freeze, developing a shifting layer of ice on their surface.'),
-    (5, 1, 'Lava Slime', 50, 10, true, 'Due to the heat of the underworld, these slimes have taken on the properties of lava. Slaying them is difficult and dangerous.'),
-    (6, 2, 'Demon Eye', 60, 2, true, 'That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu''s minions roam the skies.'),
-    (7, 3, 'Zombie', 45, 6, true, 'Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.'),
-    (8, 3, 'Skeleton', 60, 8, true, 'Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.'),
-    (9, 14, 'Cave Bat', 16, 2, true, 'They are small, hard to see, and swiftly flap about in unpredictable ways. They often carry diseases, such as rabies.'),
-    (10, 14, 'Hellbat', 46, 8, true, 'What''s worse than a rabid, fast-flying, and annoying flying rodent? One that is on fire, of course!'),
-    (11, 5, 'Eater of Souls', 40, 8, true, 'Birthed from the Corruption as a being of pure malice, its sole instincts are to pursue, punish, and kill.'),
-    (12, 5, 'Crimera', 40, 8, true, 'The most common horror to be born from the Crimson, it seeks to consume pure things with unrelenting hunger.'),
-    (13, 6, 'Giant Worm', 30, 0, true, 'These itty bitty diggy dawgs dig through the earth and take focused spelunkers by surprise, causing unwanted distress.'),
-    (14, 16, 'Piranha', 30, 2, true, 'Just one of these sharp-toothed fish can easily end a life. Luckily, they tend to swarm their victims in large groups! Life is grand.'),
-    (15, 19, 'Antlion', 45, 6, true, 'When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.');
+-- Giant Worm: defesa e dano da cabeça (o corpo tem defesa 4 e a cauda 6).
+INSERT INTO enemy (id_enemy, id_ai, name, hp, defense, damage, does_despawn, lore) VALUES
+    (1, 1, 'Green Slime', 14, 0, 6, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
+    (2, 1, 'Blue Slime', 25, 2, 7, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
+    (3, 1, 'Jungle Slime', 60, 6, 18, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
+    (4, 1, 'Ice Slime', 30, 4, 8, true, 'Slimes that spent too long in arctic temperatures may begin to partially freeze, developing a shifting layer of ice on their surface.'),
+    (5, 1, 'Lava Slime', 50, 10, 15, true, 'Due to the heat of the underworld, these slimes have taken on the properties of lava. Slaying them is difficult and dangerous.'),
+    (6, 2, 'Demon Eye', 60, 2, 18, true, 'That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu''s minions roam the skies.'),
+    (7, 3, 'Zombie', 45, 6, 14, true, 'Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.'),
+    (8, 3, 'Skeleton', 60, 8, 20, true, 'Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.'),
+    (9, 14, 'Cave Bat', 16, 2, 13, true, 'They are small, hard to see, and swiftly flap about in unpredictable ways. They often carry diseases, such as rabies.'),
+    (10, 14, 'Hellbat', 46, 8, 35, true, 'What''s worse than a rabid, fast-flying, and annoying flying rodent? One that is on fire, of course!'),
+    (11, 5, 'Eater of Souls', 40, 8, 22, true, 'Birthed from the Corruption as a being of pure malice, its sole instincts are to pursue, punish, and kill.'),
+    (12, 5, 'Crimera', 40, 8, 22, true, 'The most common horror to be born from the Crimson, it seeks to consume pure things with unrelenting hunger.'),
+    (13, 6, 'Giant Worm', 30, 0, 8, true, 'These itty bitty diggy dawgs dig through the earth and take focused spelunkers by surprise, causing unwanted distress.'),
+    (14, 16, 'Piranha', 30, 2, 25, true, 'Just one of these sharp-toothed fish can easily end a life. Luckily, they tend to swarm their victims in large groups! Life is grand.'),
+    (15, 19, 'Antlion', 45, 6, 10, true, 'When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.');
 
 INSERT INTO enemy_biome (id_enemy, id_biome) VALUES
     (1, 1),
