@@ -130,10 +130,14 @@ def add_item(cur, id_inventory, capacity, id_item, quantity):
     row = cur.fetchone()
     if row:
         cur.execute(
-            "UPDATE inventory_item SET quantity = quantity + %s WHERE id_inventory = %s AND slot = %s",
+            """
+            UPDATE inventory_item SET quantity = quantity + %s
+            WHERE id_inventory = %s AND slot = %s
+            RETURNING slot, quantity
+            """,
             (quantity, id_inventory, row[0]),
         )
-        return
+        return cur.fetchone()
     cur.execute("SELECT slot FROM inventory_item WHERE id_inventory = %s", (id_inventory,))
     used = {slot for (slot,) in cur.fetchall()}
     free = next((slot for slot in range(capacity) if slot not in used), None)
@@ -143,6 +147,7 @@ def add_item(cur, id_inventory, capacity, id_item, quantity):
         "INSERT INTO inventory_item (id_inventory, slot, id_item, quantity) VALUES (%s, %s, %s, %s)",
         (id_inventory, free, id_item, quantity),
     )
+    return free, quantity
 
 
 def remove_item(cur, id_inventory, id_item, quantity):
@@ -188,26 +193,45 @@ def craft(conn, id_player, id_item):
     with conn, conn.cursor() as cur:
         id_inventory, capacity = main_inventory(cur, id_player)
         cur.execute(
-            "SELECT id_recipe, result_quantity FROM recipe WHERE id_result = %s ORDER BY id_recipe",
+            """
+            SELECT recipe.id_recipe, recipe.result_quantity, coalesce(station.name, 'à mão')
+            FROM recipe
+            LEFT JOIN item AS station ON station.id_item = recipe.id_station
+            WHERE recipe.id_result = %s
+            ORDER BY recipe.id_recipe
+            """,
             (id_item,),
         )
         options = cur.fetchall()
         if not options:
             return None
         missing = []
-        for id_recipe, result_quantity in options:
+        for id_recipe, result_quantity, station in options:
             missing = missing_ingredients(cur, id_inventory, id_recipe)
             if missing:
                 continue
             cur.execute(
-                "SELECT id_ingredient, quantity FROM recipe_ingredient WHERE id_recipe = %s",
+                """
+                SELECT recipe_ingredient.id_ingredient, item.name, recipe_ingredient.quantity
+                FROM recipe_ingredient
+                INNER JOIN item ON item.id_item = recipe_ingredient.id_ingredient
+                WHERE recipe_ingredient.id_recipe = %s
+                """,
                 (id_recipe,),
             )
-            for id_ingredient, quantity in cur.fetchall():
+            consumed = cur.fetchall()
+            for id_ingredient, _, quantity in consumed:
                 remove_item(cur, id_inventory, id_ingredient, quantity)
-            add_item(cur, id_inventory, capacity, id_item, result_quantity)
-            return result_quantity, []
-        return 0, missing
+            slot, total = add_item(cur, id_inventory, capacity, id_item, result_quantity)
+            return {
+                "quantity": result_quantity,
+                "station": station,
+                "consumed": [(name, quantity) for _, name, quantity in consumed],
+                "slot": slot,
+                "total": total,
+                "missing": [],
+            }
+        return {"quantity": 0, "missing": missing}
 
 
 class DeadPlayerError(Exception):
