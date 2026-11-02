@@ -23,15 +23,18 @@ def format_coins(copper):
 
 def list_players(conn):
     rows = [
-        (name, hp, mana, player_class, team, "sim" if alive else "não", format_coins(coins), defense)
-        for name, hp, mana, player_class, team, alive, coins, defense in operacoes.list_players(conn)
+        (id_player, name, hp, mana, player_class, team, "sim" if alive else "não", format_coins(coins), defense)
+        for id_player, name, hp, mana, player_class, team, alive, coins, defense in operacoes.list_players(conn)
     ]
-    show(["Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
+    show(["Id", "Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
 
 
 def ask(conn, table, id_column, label):
-    name = input(f"{label}: ").strip()
-    matches = operacoes.find_by_name(conn, table, id_column, name)
+    name = input(f"{label} (nome ou id): ").strip()
+    if name.isdigit():
+        matches = operacoes.find_by_id(conn, table, id_column, int(name))
+    else:
+        matches = operacoes.find_by_name(conn, table, id_column, name)
     if not matches:
         print(f"Nenhum resultado para '{name}'.")
         return None
@@ -45,16 +48,16 @@ def show_inventory(conn):
     player = ask(conn, "player", "id_player", "Jogador")
     if player:
         rows = [
-            (inventory, slot, item, quantity, "sim" if equipped else "")
-            for inventory, slot, item, quantity, equipped in operacoes.player_inventory(conn, player[0])
+            (inventory, slot, id_item, item, quantity, "sim" if equipped else "")
+            for inventory, slot, id_item, item, quantity, equipped in operacoes.player_inventory(conn, player[0])
         ]
-        show(["Inventário", "Slot", "Item", "Qtd", "Equipado"], rows)
+        show(["Inventário", "Slot", "Id", "Item", "Qtd", "Equipado"], rows)
 
 
 def show_biome_enemies(conn):
     biome = ask(conn, "biome", "id_biome", "Bioma")
     if biome:
-        show(["Inimigo", "Vida", "Defesa", "IA"], operacoes.biome_enemies(conn, biome[0]))
+        show(["Id", "Inimigo", "Vida", "Defesa", "IA"], operacoes.biome_enemies(conn, biome[0]))
 
 
 def show_item_sources(conn):
@@ -73,9 +76,9 @@ def show_recipes(conn):
         return
     for id_recipe in dict.fromkeys(row[0] for row in rows):
         ingredients = [row for row in rows if row[0] == id_recipe]
-        _, result_quantity, station, _, _ = ingredients[0]
+        _, result_quantity, station, _, _, _ = ingredients[0]
         print(f"\n{result_quantity}x {item[1]} (estação: {station})")
-        show(["Ingrediente", "Qtd"], [(name, quantity) for _, _, _, name, quantity in ingredients])
+        show(["Id", "Ingrediente", "Qtd"], [row[3:] for row in ingredients])
 
 
 def craft_item(conn):
@@ -117,15 +120,15 @@ def defeat_enemy(conn):
 
 
 def list_biomes(conn):
-    show(["Bioma", "Inimigos"], operacoes.list_biomes(conn))
+    show(["Id", "Bioma", "Inimigos"], operacoes.list_biomes(conn))
 
 
 def list_items(conn):
-    show(["Item", "Tipo", "Raridade", "Dano"], operacoes.list_items(conn))
+    show(["Id", "Item", "Tipo", "Raridade", "Dano"], operacoes.list_items(conn))
 
 
 def list_enemies(conn):
-    show(["Inimigo", "Vida", "Defesa", "IA", "Biomas"], operacoes.list_enemies(conn))
+    show(["Id", "Inimigo", "Vida", "Defesa", "IA", "Biomas"], operacoes.list_enemies(conn))
 
 
 MENU = [

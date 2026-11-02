@@ -5,12 +5,18 @@ def list_players(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT name, hp || '/' || max_hp, mana || '/' || max_mana, class, team,
+            SELECT id_player, name, hp || '/' || max_hp, mana || '/' || max_mana, class, team,
                    is_alive, coins, general_stats ->> 'defense'
             FROM player
             ORDER BY id_player
             """
         )
+        return cur.fetchall()
+
+
+def find_by_id(conn, table, id_column, id_value):
+    with conn.cursor() as cur:
+        cur.execute(f"SELECT {id_column}, name FROM {table} WHERE {id_column} = %s", (id_value,))
         return cur.fetchall()
 
 
@@ -29,7 +35,7 @@ def player_inventory(conn, id_player):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT inventory.type, inventory_item.slot, item.name,
+            SELECT inventory.type, inventory_item.slot, item.id_item, item.name,
                    inventory_item.quantity, inventory_item.equipped
             FROM inventory
             INNER JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
@@ -50,7 +56,7 @@ def biome_enemies(conn, id_biome):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT enemy.name, enemy.hp, enemy.defense, ai.name
+            SELECT enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name
             FROM enemy_biome
             INNER JOIN enemy ON enemy.id_enemy = enemy_biome.id_enemy
             INNER JOIN ai ON ai.id_ai = enemy.id_ai
@@ -90,7 +96,7 @@ def recipes(conn, id_item):
         cur.execute(
             """
             SELECT recipe.id_recipe, recipe.result_quantity, coalesce(station.name, 'à mão'),
-                   ingredient.name, recipe_ingredient.quantity
+                   ingredient.id_item, ingredient.name, recipe_ingredient.quantity
             FROM recipe
             INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
             INNER JOIN item AS ingredient ON ingredient.id_item = recipe_ingredient.id_ingredient
@@ -229,7 +235,7 @@ def list_biomes(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT biome.name, count(enemy_biome.id_enemy)
+            SELECT biome.id_biome, biome.name, count(enemy_biome.id_enemy)
             FROM biome
             LEFT JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
             GROUP BY biome.id_biome, biome.name
@@ -241,7 +247,7 @@ def list_biomes(conn):
 
 def list_items(conn):
     with conn.cursor() as cur:
-        cur.execute("SELECT name, type, rarity, damage FROM item ORDER BY type, name")
+        cur.execute("SELECT id_item, name, type, rarity, damage FROM item ORDER BY id_item")
         return cur.fetchall()
 
 
@@ -249,14 +255,14 @@ def list_enemies(conn):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT enemy.name, enemy.hp, enemy.defense, ai.name,
+            SELECT enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name,
                    string_agg(biome.name, ', ' ORDER BY biome.name)
             FROM enemy
             INNER JOIN ai ON ai.id_ai = enemy.id_ai
             LEFT JOIN enemy_biome ON enemy_biome.id_enemy = enemy.id_enemy
             LEFT JOIN biome ON biome.id_biome = enemy_biome.id_biome
             GROUP BY enemy.id_enemy, enemy.name, enemy.hp, enemy.defense, ai.name
-            ORDER BY enemy.name
+            ORDER BY enemy.id_enemy
             """
         )
         return cur.fetchall()
