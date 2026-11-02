@@ -116,6 +116,10 @@ def defeat_enemy(conn):
         print("Nenhum item foi dropado.")
 
 
+def list_biomes(conn):
+    show(["Bioma", "Inimigos"], operacoes.list_biomes(conn))
+
+
 MENU = [
     ("Listar jogadores", list_players),
     ("Ver inventário de um jogador", show_inventory),
@@ -124,6 +128,7 @@ MENU = [
     ("Ver receita de um item", show_recipes),
     ("Fabricar item", craft_item),
     ("Derrotar inimigo", defeat_enemy),
+    ("Listar biomas", list_biomes),
 ]
 
 

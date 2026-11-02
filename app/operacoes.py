@@ -223,3 +223,17 @@ def defeat_enemy(conn, id_player, id_enemy):
                 add_item(cur, id_inventory, capacity, id_item, quantity)
                 obtained.append((name, quantity))
         return obtained
+
+
+def list_biomes(conn):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT biome.name, count(enemy_biome.id_enemy)
+            FROM biome
+            LEFT JOIN enemy_biome ON enemy_biome.id_biome = biome.id_biome
+            GROUP BY biome.id_biome, biome.name
+            ORDER BY biome.id_biome
+            """
+        )
+        return cur.fetchall()
