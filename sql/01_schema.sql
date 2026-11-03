@@ -1,6 +1,11 @@
 -- Criação das tabelas do banco Terraria (segunda iteração).
 -- Ver docs/iteracao2/der.md e docs/mudancas.md.
 
+-- Permite executar o script novamente, recriando o banco do zero.
+DROP TABLE IF EXISTS inventory_item, inventory, player,
+                     recipe_ingredient, recipe, enemy_drop, item,
+                     enemy_biome, enemy, ai, biome CASCADE;
+
 CREATE TABLE biome (
     id_biome serial PRIMARY KEY,
     name     text NOT NULL UNIQUE
