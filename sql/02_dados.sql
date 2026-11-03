@@ -256,3 +256,13 @@ INSERT INTO inventory_item (id_inventory, slot, id_item, quantity, equipped) VAL
     (13, 0, 15, 4, false), (13, 1, 12, 30, false),
     (15, 0, 48, 1, true), (15, 1, 51, 1, true), (15, 2, 53, 1, true),
     (15, 3, 47, 1, false);
+
+-- Como os ids foram inseridos manualmente, as sequências dos serial
+-- precisam continuar a partir do maior id existente.
+SELECT setval('biome_id_biome_seq', (SELECT max(id_biome) FROM biome));
+SELECT setval('ai_id_ai_seq', (SELECT max(id_ai) FROM ai));
+SELECT setval('item_id_item_seq', (SELECT max(id_item) FROM item));
+SELECT setval('enemy_id_enemy_seq', (SELECT max(id_enemy) FROM enemy));
+SELECT setval('recipe_id_recipe_seq', (SELECT max(id_recipe) FROM recipe));
+SELECT setval('player_id_player_seq', (SELECT max(id_player) FROM player));
+SELECT setval('inventory_id_inventory_seq', (SELECT max(id_inventory) FROM inventory));
