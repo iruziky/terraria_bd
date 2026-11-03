@@ -59,3 +59,31 @@ sudo -u postgres psql -d terraria -f sql/02_dados.sql
 ```
 
 Nesse caso, a aplicação precisa das variáveis `PGPORT=5432` e, se necessário, `PGUSER` e `PGPASSWORD`.
+
+## Exemplos de consultas
+
+```bash
+PGPASSWORD=postgres psql -h localhost -p 5433 -U postgres -d terraria -f sql/03_consultas.sql
+```
+
+O arquivo tem consultas comentadas que cobrem seleção, projeção e renomeação, junções, união, interseção, subtração, produto cartesiano, divisão, tabelas temporárias, `UPDATE`, `ALTER TABLE` e uma demonstração das restrições (comandos que falham de propósito). As consultas que alteram dados ficam dentro de `BEGIN ... ROLLBACK`, então o script pode ser executado várias vezes.
+
+## Aplicação
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r app/requirements.txt
+cd app && ../.venv/bin/python main.py
+```
+
+Menu:
+
+1. **Listar jogadores**: vida, mana, classe, time, moedas e defesa.
+2. **Ver inventário de um jogador**: todos os inventários, slot a slot.
+3. **Inimigos de um bioma.**
+4. **Como obter um item**: drops (com chance) e receitas.
+5. **Ver receita de um item**: ingredientes e estação.
+6. **Fabricar item**: confere os ingredientes no inventário principal, consome e adiciona o resultado numa única transação.
+7. **Derrotar inimigo**: sorteia cada drop pela chance e guarda os itens no inventário principal.
+
+As buscas aceitam parte do nome, sem diferenciar maiúsculas e minúsculas (por exemplo, `iron pick`).
