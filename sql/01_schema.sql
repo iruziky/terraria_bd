@@ -79,7 +79,16 @@ CREATE TABLE player (
     used_demon_heart boolean NOT NULL DEFAULT false,
     coins            integer NOT NULL DEFAULT 0,
     team             text NOT NULL DEFAULT 'none',
-    general_stats    jsonb
+    general_stats    jsonb,
+    CHECK (max_hp BETWEEN 100 AND 500),
+    CHECK (hp BETWEEN 0 AND max_hp),
+    CHECK (max_mana BETWEEN 20 AND 200),
+    CHECK (mana BETWEEN 0 AND max_mana),
+    CHECK (class IN ('melee', 'ranged', 'magic', 'summoner')),
+    CHECK (move_speed > 0),
+    CHECK (crit_chance BETWEEN 0 AND 1),
+    CHECK (coins >= 0),
+    CHECK (team IN ('none', 'red', 'green', 'blue', 'yellow', 'pink'))
 );
 
 CREATE TABLE inventory (
