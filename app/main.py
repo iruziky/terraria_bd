@@ -1,6 +1,7 @@
 import psycopg2
 from tabulate import tabulate
 
+import operacoes
 from db import connect
 
 
@@ -11,7 +12,26 @@ def show(headers, rows):
         print("Nenhum resultado.")
 
 
-MENU = []
+def format_coins(copper):
+    parts = []
+    for name, value in (("platina", 1000000), ("ouro", 10000), ("prata", 100), ("cobre", 1)):
+        amount, copper = divmod(copper, value)
+        if amount:
+            parts.append(f"{amount} {name}")
+    return " ".join(parts) or "0"
+
+
+def list_players(conn):
+    rows = [
+        (name, hp, mana, player_class, team, "sim" if alive else "não", format_coins(coins), defense)
+        for name, hp, mana, player_class, team, alive, coins, defense in operacoes.list_players(conn)
+    ]
+    show(["Jogador", "Vida", "Mana", "Classe", "Time", "Vivo", "Moedas", "Defesa"], rows)
+
+
+MENU = [
+    ("Listar jogadores", list_players),
+]
 
 
 def main():
