@@ -32,4 +32,20 @@ erDiagram
     ai ||--o{ enemy : "segue"
     enemy ||--|{ enemy_biome : "habita"
     biome ||--o{ enemy_biome : "abriga"
+    item {
+        serial id_item PK
+        text name UK
+        text type
+        text rarity
+        int damage
+    }
+    enemy_drop {
+        int id_enemy PK,FK
+        int id_item PK,FK
+        numeric chance
+        int min_quantity
+        int max_quantity
+    }
+    enemy ||--o{ enemy_drop : "origina"
+    item ||--o{ enemy_drop : "e obtido em"
 ```
