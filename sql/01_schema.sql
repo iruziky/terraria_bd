@@ -31,3 +31,11 @@ CREATE TABLE enemy_biome (
     id_biome integer REFERENCES biome (id_biome),
     PRIMARY KEY (id_enemy, id_biome)
 );
+
+CREATE TABLE item (
+    id_item serial PRIMARY KEY,
+    name    text NOT NULL UNIQUE,
+    type    text NOT NULL,
+    rarity  text NOT NULL,
+    damage  integer
+);
