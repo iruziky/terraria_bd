@@ -17,14 +17,36 @@ INSERT INTO biome (id_biome, name) VALUES
 
 -- id_ai igual ao ID do estilo de IA na wiki (https://terraria.wiki.gg/wiki/AI).
 INSERT INTO ai (id_ai, name, behavior) VALUES
+    (0, 'Null AI', 'Used by bound NPCs and entities with no movement.'),
     (1, 'Slime AI', 'Hops in one direction, slides on slopes, floats in water, follows player if damaged or during nighttime.'),
     (2, 'Demon Eye AI', 'Flies, follows player, bounces off walls in an arc.'),
-    (3, 'Fighter AI', 'Will walk, jump over holes, follow player.'),
+    (3, 'Fighter AI', 'Will walk, jump over holes, follow player. Tries to line up vertically first.'),
+    (4, 'Worm AI', 'Burrows in ground (and/or air), passes through blocks, follows player.'),
     (5, 'Flying AI', 'Flies, looks at player, follows player.'),
-    (6, 'Worm AI', 'Burrows in ground (and/or air), passes through blocks, follows player.'),
-    (14, 'Bat AI', 'Spasmodically flies towards player.'),
-    (16, 'Swimming AI', 'Swims back and forth and moves towards the player if they are in water.'),
-    (19, 'Antlion AI', 'Looks at player, climbs overlapping blocks, shoots falling sand at nearby players.');
+    (6, 'Spell / Projectile AI', 'Travels in a direct line toward player, going through blocks. Used by casters.'),
+    (7, 'Passive AI', 'Walks semi-randomly, jumps over holes, used by town NPCs and critters.'),
+    (8, 'Caster AI', 'Casts spells at player, stays stationary, warps after a set number of casts or if falling.'),
+    (9, 'Magical Projectiles AI', 'Tracks or travels directly towards targets in magical projectile patterns.'),
+    (10, 'Hesitant Flier AI', 'Floats and moves hesitantly toward the player, used by entities like Cursed Skulls.'),
+    (11, 'Flying Skull AI', 'Fast erratic flying pattern, used by dungeon bosses/guardians and Skeletron heads.'),
+    (12, 'Flying Arms AI', 'Swings around a central entity or boss, used by Skeletron arms.'),
+    (13, 'Carnivorous Plant AI', 'Stationary or anchored plant that snaps at nearby players, like Snatchers and Man Eaters.'),
+    (14, 'Bat AI', 'Spasmodically flies towards player with erratic bursts of speed.'),
+    (15, 'King Slime AI', 'Boss AI that teleports when stuck or far away, grows smaller as health decreases, and spawns smaller slimes.'),
+    (16, 'Swimming AI', 'Swims back and forth and moves towards the player if they are in water (e.g., Piranhas, Sharks, Goldfish).'),
+    (17, 'Vulture AI', 'Stands still until the player gets close or damages it, then switches to flying/diving attack patterns.'),
+    (18, 'Jellyfish AI', 'Drifts up and down in water, periodically emitting light or shocking the player.'),
+    (19, 'Antlion AI', 'Looks at player, climbs overlapping blocks, shoots falling sand or projectiles at nearby players.'),
+    (20, 'Spike Ball AI', 'Rolls back and forth or drops vertically along a fixed track or path.'),
+    (21, 'Blazing Wheel AI', 'Rolls rapidly along blocks, bouncing off walls in the Dungeon.'),
+    (22, 'Hovering Fliers AI', 'Hovers smoothly above or around the player, firing ranged projectiles (e.g., Pixies, Wraiths, Gastropods).'),
+    (23, 'Animated Weapons AI', 'Floats, dashes, and swings toward the player as an animated melee weapon (e.g., Enchanted Swords).'),
+    (24, 'Birds AI', 'Walks, hops, and occasionally flies away when startled.'),
+    (25, 'Mimic AI', 'Disguises as a chest until a player approaches, then leaps and bites aggressively.'),
+    (26, 'Unicorn AI', 'Charges rapidly across the ground and leaps over obstacles toward the player.'),
+    (27, 'Wall of Flesh (Mouth) AI', 'Slowly scrolls across the underworld, dragging players backwards and damaging them on touch.'),
+    (28, 'Wall of Flesh (Eye) AI', 'Fires lasers or tracking projectiles from the eyes of the Wall of Flesh boss.'),
+    (29, 'The Hungry AI', 'Tethered via fleshy arms to the Wall of Flesh, lunging outward to bite players.');
 
 -- Materiais, blocos e consumíveis.
 INSERT INTO item (id_item, name, type, rarity, damage) VALUES
@@ -85,9 +107,8 @@ INSERT INTO item (id_item, name, type, rarity, damage) VALUES
     (52, 'Compass', 'accessory', 'Blue', NULL),
     (53, 'Magma Stone', 'accessory', 'Orange', NULL);
 
--- Vida e defesa no modo Classic; lore é a entrada do Bestiário.
+-- Status de criaturas diversas classic_mode
 -- move_speed fica nulo porque a wiki não informa a velocidade dos inimigos.
--- Giant Worm: defesa da cabeça (o corpo tem 4 e a cauda 6).
 INSERT INTO enemy (id_enemy, id_ai, name, hp, defense, does_despawn, lore) VALUES
     (1, 1, 'Green Slime', 14, 0, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
     (2, 1, 'Blue Slime', 25, 2, true, 'A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.'),
@@ -103,7 +124,26 @@ INSERT INTO enemy (id_enemy, id_ai, name, hp, defense, does_despawn, lore) VALUE
     (12, 5, 'Crimera', 40, 8, true, 'The most common horror to be born from the Crimson, it seeks to consume pure things with unrelenting hunger.'),
     (13, 6, 'Giant Worm', 30, 0, true, 'These itty bitty diggy dawgs dig through the earth and take focused spelunkers by surprise, causing unwanted distress.'),
     (14, 16, 'Piranha', 30, 2, true, 'Just one of these sharp-toothed fish can easily end a life. Luckily, they tend to swarm their victims in large groups! Life is grand.'),
-    (15, 19, 'Antlion', 45, 6, true, 'When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.');
+    (15, 19, 'Antlion', 45, 6, true, 'When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.'),
+    (16, 3, 'Corrupt Bunny', 80, 6, true, 'Corrupted by the evil of the land, this once-innocent fluffy creature now hungers for human flesh.'),
+    (17, 3, 'Corrupt Goldfish', 100, 4, true, 'It mutated and grew legs after being exposed to the Corruption, proving that nowhere is truly safe.'),
+    (18, 3, 'Corrupt Penguin', 90, 6, true, 'Even the chilly inhabitants of the ice biomes aren''t safe from the creeping purple tentacles of the Corruption.'),
+    (19, 1, 'Purple Slime', 40, 4, true, 'A slightly more resilient brand of slime found deeper underground, filled with mysterious goop.'),
+    (20, 1, 'Red Slime', 50, 6, true, 'Found lingering in deeper caverns, its striking red color warns of increased danger.'),
+    (21, 1, 'Yellow Slime', 60, 8, true, 'A heavy, dense slime found wandering through underground layers.'),
+    (22, 1, 'Pinky', 140, 5, true, 'Though tiny, this rare pink slime boasts a shocking amount of health and high bounce potential!'),
+    (23, 7, 'Snow Flinx', 50, 6, true, 'A furry bipedal creature native to ice biomes. It prefers to mind its own business until provoked.'),
+    (24, 3, 'Zombie Eskimo', 60, 6, true, 'A frozen corpse wrapped in heavy winter gear, shambling forward with frostbitten rage.'),
+    (25, 14, 'Ice Bat', 32, 6, true, 'A bat adapted to frigid subterranean temperatures, its wings stiffened by frost.'),
+    (26, 3, 'Face Monster', 80, 6, true, 'A grotesque amalgamation of fleshy limbs and horrifying maws born directly from the Crimson.'),
+    (27, 3, 'Blood Crawler', 50, 4, true, 'An arachnid-like horror dripping with crimson fluids, scuttling rapidly along cave walls.'),
+    (28, 8, 'Fire Imp', 100, 10, true, 'Denizens of the Underworld that teleport strategically while casting explosive fireballs at intruders.'),
+    (29, 6, 'Bone Serpent', 200, 8, true, 'A massive skeletal dragon swimming through the rivers of lava in the Underworld with terrifying speed.'),
+    (30, 22, 'Harpy', 100, 0, true, 'Half-human, half-bird abominations that rule the floating islands high above the surface world.'),
+    (31, 15, 'King Slime', 2000, 10, true, 'The sovereign of gelatinous life, formed when thousands of slimes merge together during a slime rain or special conditions.'),
+    (32, 11, 'Eye of Cthulhu', 2800, 12, true, 'A colossal ocular terror detached from an ancient celestial entity, swooping down from the night sky to feast.'),
+    (33, 12, 'Skeletron', 4400, 25, true, 'The cursed guardian of the dungeon. Once a powerful old man, now a floating skull with deadly spinning hands.'),
+    (34, 27, 'Wall of Flesh', 8000, 12, true, 'The ruler of the underworld and the gateway to Hardmode. Firing lasers and dragging you across the map, it represents the world''s ultimate balance.');
 
 INSERT INTO enemy_biome (id_enemy, id_biome) VALUES
     (1, 1),
@@ -120,68 +160,88 @@ INSERT INTO enemy_biome (id_enemy, id_biome) VALUES
     (12, 6),
     (13, 7), (13, 8),
     (14, 4), (14, 8),
-    (15, 2);
+    (15, 2),
+    (16, 5), (16, 1),
+    (17, 5), (17, 10),
+    (18, 5), (18, 3),
+    (19, 7), (19, 8),
+    (20, 8),
+    (21, 8),
+    (22, 1), (22, 7),
+    (23, 3),
+    (24, 3), (24, 7),
+    (25, 3), (25, 8),
+    (26, 6),
+    (27, 6), (27, 8),
+    (28, 9),
+    (29, 9),
+    (30, 1),
+    (31, 1),
+    (32, 1),
+    (33, 8),
+    (34, 9);
 
--- Chance como fração (0.333333 = 33,33%). Quando a wiki não mostra
--- quantidade, o drop é de 1 unidade. Moedas não são registradas como drop.
+-- Chance como fração (0.333333 = 33,33%).
+-- Default é 1 unidade. 
+-- Moedas não são registradas como drop.
 INSERT INTO enemy_drop (id_enemy, id_item, chance, min_quantity, max_quantity) VALUES
-    (1, 5, 1, 1, 2),
-    (2, 5, 1, 1, 2),
-    (3, 5, 1, 1, 2),
-    (4, 5, 1, 1, 2),
-    (6, 18, 0.333333, 1, 1),
-    (6, 19, 0.01, 1, 1),
-    (7, 49, 0.02, 1, 1),
-    (7, 34, 0.004, 1, 1),
-    (8, 17, 0.04, 1, 1),
-    (8, 36, 0.005, 1, 1),
-    (9, 35, 0.004, 1, 1),
+    (1, 5, 1, 1, 2),    -- Green Slime -> Gel
+    (2, 5, 1, 1, 2),    -- Blue Slime -> Gel
+    (3, 5, 1, 1, 2),    -- Jungle Slime -> Gel
+    (4, 5, 1, 1, 2),    -- Ice Slime -> Gel
+    (6, 18, 0.333333, 1, 1), -- Demon Eye -> Lens
+    (6, 19, 0.01, 1, 1),     -- Demon Eye -> Black Lens
+    (7, 49, 0.02, 1, 1),     -- Zombie -> Nature's Gift (Rare drop example)
+    (7, 34, 0.004, 1, 1),    -- Zombie -> Wooden Bow
+    (8, 17, 0.04, 1, 1),     -- Skeleton -> Hook
+    (8, 36, 0.005, 1, 1),    -- Skeleton -> Blowpipe
+    (9, 35, 0.004, 1, 1),    -- Cave Bat -> Wooden Boomerang
     (9, 51, 0.01, 1, 1),
-    (10, 53, 0.0067, 1, 1),
-    (11, 20, 0.333333, 1, 1),
-    (12, 21, 0.333333, 1, 1),
-    (14, 17, 0.033, 1, 1),
+    (10, 53, 0.0067, 1, 1),  -- Hellbat drop
+    (11, 20, 0.333333, 1, 1),-- Eater of Souls -> Rotten Chunk
+    (12, 21, 0.333333, 1, 1),-- Crimera -> Vertebra
+    (14, 17, 0.033, 1, 1),   -- Piranha -> Hook
     (14, 52, 0.0133, 1, 1),
-    (15, 22, 0.333, 1, 2);
+    (15, 22, 0.333, 1, 2);   -- Antlion -> Antlion Mandible
 
 -- Estações: 26 = Work Bench, 27 = Furnace, 28 = Iron Anvil,
 -- 8 = Bottle (colocada no mundo, funciona como Placed Bottle). NULL = à mão.
 INSERT INTO recipe (id_recipe, id_result, result_quantity, id_station) VALUES
-    (1, 26, 1, NULL),
-    (2, 6, 3, NULL),
-    (3, 27, 1, 26),
-    (4, 11, 1, 27),
-    (5, 13, 1, 27),
-    (6, 28, 1, 26),
-    (7, 4, 1, 27),
-    (8, 8, 2, 27),
-    (9, 9, 2, 8),
-    (10, 15, 1, 27);
+    (1, 26, 1, NULL), -- Crafted by Hand: Copper Broadsword
+    (2, 6, 3, NULL),  -- Crafted by Hand: Torches
+    (3, 27, 1, 26),   -- Crafted at Work Bench: Copper Shortsword
+    (4, 11, 1, 27),   -- Crafted at Furnace: Copper Bar
+    (5, 13, 1, 27),   -- Crafted at Furnace: Iron Bar
+    (6, 28, 1, 26),   -- Crafted at Work Bench: Copper Pickaxe
+    (7, 4, 1, 27),    -- Crafted at Furnace: Glass
+    (8, 8, 2, 27),    -- Crafted at Furnace: Bottle
+    (9, 9, 2, 8),     -- Crafted at Bottled Water: Lesser Healing Potion
+    (10, 15, 1, 27);  -- Crafted at Furnace: Demonite Bar
 
 INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
-    (1, 1, 10),
-    (2, 5, 1), (2, 1, 1),
-    (3, 2, 20), (3, 1, 4), (3, 6, 3),
-    (4, 10, 3),
-    (5, 12, 3),
-    (6, 13, 5),
-    (7, 3, 2),
-    (8, 4, 1),
-    (9, 7, 1), (9, 5, 2), (9, 8, 2),
-    (10, 14, 3);
+    (1, 1, 10),              -- Recipe 1 requires 10x Wood
+    (2, 5, 1), (2, 1, 1),    -- Recipe 2 requires 1x Gel, 1x Wood
+    (3, 2, 20), (3, 1, 4), (3, 6, 3), -- Recipe 3 ingredients
+    (4, 10, 3),              -- Recipe 4 requires 3x Copper Ore
+    (5, 12, 3),              -- Recipe 5 requires 3x Iron Ore
+    (6, 13, 5),              -- Recipe 6 requires 5x Iron Bar
+    (7, 3, 2),               -- Recipe 7 requires 2x Sand Block
+    (8, 4, 1),               -- Recipe 8 requires 1x Glass
+    (9, 7, 1), (9, 5, 2), (9, 8, 2), -- Recipe 9 ingredients
+    (10, 14, 3);             -- Recipe 10 requires 3x Demonite Ore
 
 INSERT INTO recipe (id_recipe, id_result, result_quantity, id_station) VALUES
-    (11, 29, 1, 26),
-    (12, 30, 1, 26),
-    (13, 40, 25, 26),
-    (14, 41, 10, NULL),
-    (15, 31, 1, 28),
-    (16, 32, 1, 28),
-    (17, 33, 1, 28),
-    (18, 37, 1, 28),
-    (19, 38, 1, 28),
-    (20, 16, 15, 28),
-    (21, 39, 1, 28);
+    (11, 29, 1, 26), -- Crafted at Work Bench: Copper Axe
+    (12, 30, 1, 26), -- Crafted at Work Bench: Copper Broadsword (Alt)
+    (13, 40, 25, 26),-- Crafted at Work Bench: Healing Potion batch
+    (14, 41, 10, NULL),-- Crafted by Hand: Mana Potion batch
+    (15, 31, 1, 28), -- Crafted at Anvil/Furnace: Iron Shortsword
+    (16, 32, 1, 28), -- Crafted at Anvil/Furnace: Iron Pickaxe
+    (17, 33, 1, 28), -- Crafted at Anvil/Furnace: Iron Axe
+    (18, 37, 1, 28), -- Crafted at Anvil/Furnace: Shuriken
+    (19, 38, 1, 28), -- Crafted at Anvil/Furnace: Throwing Knife
+    (20, 16, 15, 28),-- Crafted at Anvil/Furnace: Chain
+    (21, 39, 1, 28); -- Crafted at Anvil/Furnace: Glowstick
 
 INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
     (11, 1, 7),
@@ -197,11 +257,11 @@ INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
     (21, 16, 3), (21, 17, 1);
 
 INSERT INTO recipe (id_recipe, id_result, result_quantity, id_station) VALUES
-    (22, 43, 1, 28),
-    (23, 44, 1, 28),
-    (24, 45, 1, 28),
-    (25, 46, 1, 26),
-    (26, 47, 1, 26);
+    (22, 43, 1, 28), -- Magic Mirror
+    (23, 44, 1, 28), -- Grappling Hook
+    (24, 45, 1, 28), -- Climbing Claws
+    (25, 46, 1, 26), -- Hermes Boots
+    (26, 47, 1, 26); -- Cloud in a Bottle
 
 INSERT INTO recipe_ingredient (id_recipe, id_ingredient, quantity) VALUES
     (22, 11, 12),
