@@ -121,3 +121,25 @@ INSERT INTO enemy_biome (id_enemy, id_biome) VALUES
     (13, 7), (13, 8),
     (14, 4), (14, 8),
     (15, 2);
+
+-- Chance como fração (0.333333 = 33,33%). Quando a wiki não mostra
+-- quantidade, o drop é de 1 unidade. Moedas não são registradas como drop.
+INSERT INTO enemy_drop (id_enemy, id_item, chance, min_quantity, max_quantity) VALUES
+    (1, 5, 1, 1, 2),
+    (2, 5, 1, 1, 2),
+    (3, 5, 1, 1, 2),
+    (4, 5, 1, 1, 2),
+    (6, 18, 0.333333, 1, 1),
+    (6, 19, 0.01, 1, 1),
+    (7, 49, 0.02, 1, 1),
+    (7, 34, 0.004, 1, 1),
+    (8, 17, 0.04, 1, 1),
+    (8, 36, 0.005, 1, 1),
+    (9, 35, 0.004, 1, 1),
+    (9, 51, 0.01, 1, 1),
+    (10, 53, 0.0067, 1, 1),
+    (11, 20, 0.333333, 1, 1),
+    (12, 21, 0.333333, 1, 1),
+    (14, 17, 0.033, 1, 1),
+    (14, 52, 0.0133, 1, 1),
+    (15, 22, 0.333, 1, 2);
