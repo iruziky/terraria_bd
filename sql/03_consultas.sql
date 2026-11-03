@@ -53,3 +53,37 @@ INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
 INNER JOIN item AS ingrediente ON ingrediente.id_item = recipe_ingredient.id_ingredient
 LEFT JOIN item AS estacao ON estacao.id_item = recipe.id_station
 WHERE resultado.name = 'Iron Pickaxe';
+
+-- 7. União: todas as formas de obter alguns itens (drop ∪ receita).
+SELECT item.name AS item, 'drop de ' || enemy.name AS origem
+FROM enemy_drop
+INNER JOIN item ON item.id_item = enemy_drop.id_item
+INNER JOIN enemy ON enemy.id_enemy = enemy_drop.id_enemy
+WHERE item.name IN ('Gel', 'Hook', 'Torch', 'Grappling Hook')
+UNION
+SELECT item.name, 'receita em ' || coalesce(estacao.name, 'à mão')
+FROM recipe
+INNER JOIN item ON item.id_item = recipe.id_result
+LEFT JOIN item AS estacao ON estacao.id_item = recipe.id_station
+WHERE item.name IN ('Gel', 'Hook', 'Torch', 'Grappling Hook')
+ORDER BY item;
+
+-- 8. Interseção: itens que são dropados por inimigos E usados como ingrediente.
+SELECT item.name FROM item
+INNER JOIN enemy_drop ON enemy_drop.id_item = item.id_item
+INTERSECT
+SELECT item.name FROM item
+INNER JOIN recipe_ingredient ON recipe_ingredient.id_ingredient = item.id_item;
+
+-- 9. Subtração: itens que não estão no inventário de nenhum jogador.
+SELECT name FROM item
+EXCEPT
+SELECT item.name FROM item
+INNER JOIN inventory_item ON inventory_item.id_item = item.id_item
+ORDER BY name;
+
+-- 9b. Subtração: inimigos que não dropam nenhum item (só moedas).
+SELECT name FROM enemy
+EXCEPT
+SELECT enemy.name FROM enemy
+INNER JOIN enemy_drop ON enemy_drop.id_enemy = enemy.id_enemy;
