@@ -45,3 +45,24 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 | `item.rarity` | `Gray`, `White`, `Blue`, `Green`, `Orange`, `Light Red`, `Pink`, `Light Purple`, `Lime`, `Yellow`, `Cyan`, `Red`, `Purple` |
 
 **Por quê:** restrições de domínio com `CHECK` foram o conteúdo visto em aula e são mais fáceis de alterar que um tipo `ENUM` (basta trocar a restrição). Os nomes de raridade seguem a [página de raridade da wiki](https://terraria.wiki.gg/wiki/Rarity).
+
+## M4. Restrições explícitas
+
+**Antes:** o diagrama só mostrava tipos, PKs e FKs.
+
+**Depois:** cada tabela declara as restrições de domínio:
+
+- `NOT NULL` em tudo que é obrigatório e `UNIQUE` nos nomes de jogador, item, bioma, IA e inimigo;
+- `0 <= hp <= max_hp`, com `max_hp` entre 100 e 500 (vida inicial e vida máxima do jogo);
+- `0 <= mana <= max_mana`, com `max_mana` entre 20 e 200;
+- `crit_chance` entre 0 e 1, `move_speed > 0` e `coins >= 0`;
+- `chance` do drop em `(0, 1]` e `1 <= min_quantity <= max_quantity`;
+- quantidades, capacidades e vida dos inimigos positivas; `slot`, `defense` e `damage` não negativos.
+
+**Por quê:** garante no próprio banco que dados impossíveis no jogo (vida negativa, chance de 150%) não sejam inseridos, em vez de depender da aplicação.
+
+## M9. Um inventário de cada tipo por jogador
+
+**Depois:** `UNIQUE (id_player, type)` em `inventory`.
+
+**Por quê:** no jogo, cada jogador tem exatamente um inventário principal, um Piggy Bank, um cofre etc. Sem essa restrição, seria possível criar dois inventários principais para o mesmo jogador.
