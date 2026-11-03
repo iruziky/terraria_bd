@@ -67,14 +67,16 @@ CREATE TABLE recipe (
     id_recipe       serial PRIMARY KEY,
     id_result       integer NOT NULL REFERENCES item (id_item) ON DELETE CASCADE,
     result_quantity integer NOT NULL DEFAULT 1,
-    id_station      integer REFERENCES item (id_item)
+    id_station      integer REFERENCES item (id_item),
+    CHECK (result_quantity > 0)
 );
 
 CREATE TABLE recipe_ingredient (
     id_recipe     integer REFERENCES recipe (id_recipe) ON DELETE CASCADE,
     id_ingredient integer REFERENCES item (id_item),
     quantity      integer NOT NULL,
-    PRIMARY KEY (id_recipe, id_ingredient)
+    PRIMARY KEY (id_recipe, id_ingredient),
+    CHECK (quantity > 0)
 );
 
 CREATE TABLE player (
