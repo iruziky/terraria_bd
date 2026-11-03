@@ -1,6 +1,6 @@
 # Mudanças da primeira para a segunda iteração
 
-Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iteracao1`](iteracao1/projeto_bd_terraria.md)) e o DER implementado no trabalho 2 ([`docs/iteracao2/der.md`](iteracao2/der.md)), com a justificativa de cada mudança.
+Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iteracao1`](iteracao1/projeto_bd_terraria.md)) e o DER implementado no trabalho 2 ([`docs/iteracao2/der.svg`](iteracao2/der.svg)), com a justificativa de cada mudança.
 
 ## M1. Nomenclatura em `snake_case` e em inglês
 
