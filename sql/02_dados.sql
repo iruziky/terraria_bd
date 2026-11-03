@@ -277,7 +277,7 @@ INSERT INTO player (id_player, name, hp, max_hp, mana, max_mana, class, move_spe
         '{"defense": 5, "life_regen": 1, "luck": 0}'),
     (2, 'Heitor', 140, 160, 20, 20, 'ranged', 1, 0.04, true, false, 12050, 'blue',
         '{"defense": 1, "life_regen": 0, "luck": 0}'),
-    (3, 'Davi', 0, 300, 100, 120, 'magic', 1, 0.04, false, true, 250000, 'none',
+    (3, 'Davi', 0, 300, 100, 120, 'mage', 1, 0.04, false, true, 250000, 'none',
         '{"defense": 2, "life_regen": 0, "luck": 0.1}');
 
 -- Capacidades do jogo: main 50 (40 + 10 da hotbar), piggy_bank e safe 40,

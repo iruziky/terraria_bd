@@ -174,8 +174,8 @@ ROLLBACK;
 -- preenche e remove (dentro de uma transação, para não alterar o banco).
 BEGIN;
 ALTER TABLE item ADD COLUMN sell_price integer;
-UPDATE item SET sell_price = 0;
-SELECT name, sell_price FROM item LIMIT 3;
+UPDATE item SET sell_price = item.id_item*2;
+SELECT name, sell_price FROM item LIMIT 10;
 ALTER TABLE item DROP COLUMN sell_price;
 ROLLBACK;
 
@@ -187,7 +187,7 @@ ROLLBACK;
 
 -- CHECK: classe que não existe.
 BEGIN;
-INSERT INTO player (name, hp, max_hp, mana, max_mana, class) VALUES ('Teste', 100, 100, 20, 20, 'ninja');
+INSERT INTO player (name, hp, max_hp, mana, max_mana, class) VALUES ('Teste', 100, 100, 20, 20, 'rogue');
 ROLLBACK;
 
 -- CHECK: chance de drop acima de 100%.

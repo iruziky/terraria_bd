@@ -103,7 +103,7 @@ CREATE TABLE player (
     CHECK (hp BETWEEN 0 AND max_hp),
     CHECK (max_mana BETWEEN 20 AND 200),
     CHECK (mana BETWEEN 0 AND max_mana),
-    CHECK (class IN ('melee', 'ranged', 'magic', 'summoner')),
+    CHECK (class IN ('melee', 'ranged', 'mage', 'summoner')),
     CHECK (move_speed > 0),
     CHECK (crit_chance BETWEEN 0 AND 1),
     CHECK (coins >= 0),
