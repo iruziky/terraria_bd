@@ -64,3 +64,20 @@ CREATE TABLE recipe_ingredient (
     quantity      integer NOT NULL,
     PRIMARY KEY (id_recipe, id_ingredient)
 );
+
+CREATE TABLE player (
+    id_player        serial PRIMARY KEY,
+    name             text NOT NULL UNIQUE,
+    hp               integer NOT NULL,
+    max_hp           integer NOT NULL,
+    mana             integer NOT NULL,
+    max_mana         integer NOT NULL,
+    class            text NOT NULL,
+    move_speed       real NOT NULL DEFAULT 1,
+    crit_chance      real NOT NULL DEFAULT 0.04,
+    is_alive         boolean NOT NULL DEFAULT false,
+    used_demon_heart boolean NOT NULL DEFAULT false,
+    coins            integer NOT NULL DEFAULT 0,
+    team             text NOT NULL DEFAULT 'none',
+    general_stats    jsonb
+);
