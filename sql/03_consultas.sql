@@ -87,3 +87,55 @@ SELECT name FROM enemy
 EXCEPT
 SELECT enemy.name FROM enemy
 INNER JOIN enemy_drop ON enemy_drop.id_enemy = enemy.id_enemy;
+
+-- 10. Produto cartesiano: todas as combinações jogador × inventário,
+-- filtradas para manter só os pares relacionados. O resultado é o mesmo
+-- de um INNER JOIN com a condição no ON.
+CREATE TEMP TABLE produto AS
+    SELECT player.id_player, player.name, inventory.id_player AS dono, inventory.type
+    FROM player
+    CROSS JOIN inventory;
+
+SELECT count(*) AS combinacoes FROM produto;
+SELECT name, type FROM produto WHERE id_player = dono ORDER BY name, type;
+
+SELECT player.name, inventory.type
+FROM player
+INNER JOIN inventory ON inventory.id_player = player.id_player
+ORDER BY player.name, inventory.type;
+
+-- 11. Divisão: jogadores que possuem TODOS os ingredientes da Iron Pickaxe
+-- no inventário principal, sem olhar a quantidade.
+-- posse(jogador, item) ÷ ingredientes(item)
+CREATE TEMP TABLE ingredientes AS
+    SELECT recipe_ingredient.id_ingredient AS id_item, recipe_ingredient.quantity
+    FROM recipe
+    INNER JOIN recipe_ingredient ON recipe_ingredient.id_recipe = recipe.id_recipe
+    INNER JOIN item ON item.id_item = recipe.id_result
+    WHERE item.name = 'Iron Pickaxe';
+
+CREATE TEMP TABLE posse AS
+    SELECT inventory.id_player, inventory_item.id_item, sum(inventory_item.quantity) AS quantity
+    FROM inventory
+    INNER JOIN inventory_item ON inventory_item.id_inventory = inventory.id_inventory
+    WHERE inventory.type = 'main'
+    GROUP BY inventory.id_player, inventory_item.id_item;
+
+SELECT player.name
+FROM player
+WHERE NOT EXISTS (
+    SELECT id_item FROM ingredientes
+    EXCEPT
+    SELECT id_item FROM posse WHERE posse.id_player = player.id_player
+);
+
+-- 11b. A mesma divisão, agora exigindo a quantidade necessária de cada ingrediente.
+SELECT player.name
+FROM player
+WHERE NOT EXISTS (
+    SELECT id_item FROM ingredientes
+    EXCEPT
+    SELECT posse.id_item FROM posse
+    INNER JOIN ingredientes ON ingredientes.id_item = posse.id_item
+    WHERE posse.id_player = player.id_player AND posse.quantity >= ingredientes.quantity
+);
