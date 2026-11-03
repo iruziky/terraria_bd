@@ -48,4 +48,19 @@ erDiagram
     }
     enemy ||--o{ enemy_drop : "origina"
     item ||--o{ enemy_drop : "e obtido em"
+    recipe {
+        serial id_recipe PK
+        int id_result FK
+        int result_quantity
+        int id_station FK
+    }
+    recipe_ingredient {
+        int id_recipe PK,FK
+        int id_ingredient PK,FK
+        int quantity
+    }
+    item ||--o{ recipe : "produz"
+    item |o--o{ recipe : "e estacao de"
+    recipe ||--|{ recipe_ingredient : "exige"
+    item ||--o{ recipe_ingredient : "participa"
 ```
