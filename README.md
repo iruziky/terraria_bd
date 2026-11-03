@@ -33,3 +33,29 @@ docker-compose.yml         PostgreSQL 16 já criado e populado
 ## DER
 
 O diagrama completo, com as cardinalidades, está em [`docs/iteracao2/der.md`](docs/iteracao2/der.md). As mudanças em relação ao trabalho 1 (nomenclatura, relação N:N entre inimigos e biomas, estação como item, restrições etc.) estão explicadas em [`docs/mudancas.md`](docs/mudancas.md).
+
+## Como rodar o banco
+
+### Com Docker (recomendado)
+
+```bash
+docker compose up -d
+```
+
+O container cria o banco `terraria` e executa `01_schema.sql` e `02_dados.sql` automaticamente. Ele fica disponível em `localhost:5433` (usuário `postgres`, senha `postgres`). A porta 5433 evita conflito com um PostgreSQL já instalado na máquina.
+
+Para recriar o banco do zero (descartando alterações feitas pela aplicação):
+
+```bash
+docker compose down -v && docker compose up -d
+```
+
+### Com um PostgreSQL local
+
+```bash
+sudo -u postgres createdb terraria
+sudo -u postgres psql -d terraria -f sql/01_schema.sql
+sudo -u postgres psql -d terraria -f sql/02_dados.sql
+```
+
+Nesse caso, a aplicação precisa das variáveis `PGPORT=5432` e, se necessário, `PGUSER` e `PGPASSWORD`.
