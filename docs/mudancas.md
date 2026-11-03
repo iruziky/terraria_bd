@@ -66,3 +66,11 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 **Depois:** `UNIQUE (id_player, type)` em `inventory`.
 
 **Por quê:** no jogo, cada jogador tem exatamente um inventário principal, um Piggy Bank, um cofre etc. Sem essa restrição, seria possível criar dois inventários principais para o mesmo jogador.
+
+## M5. Inimigo ↔ Bioma passa a ser N:N
+
+**Antes:** `Inimigo.idBioma` (FK), ou seja, cada inimigo pertencia a um único bioma (`1 : 0..*`).
+
+**Depois:** nova tabela associativa `enemy_biome (id_enemy, id_biome)` e `enemy` sem `id_biome`.
+
+**Por quê:** ao popular o banco com dados da wiki, vimos que vários inimigos aparecem em mais de um bioma. O Blue Slime aparece na Forest e no Underground, e o Giant Worm no Underground e no Cavern. O modelo 1:N obrigaria a escolher um bioma só ou a duplicar o inimigo.
