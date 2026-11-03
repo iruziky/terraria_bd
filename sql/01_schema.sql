@@ -39,3 +39,13 @@ CREATE TABLE item (
     rarity  text NOT NULL,
     damage  integer
 );
+
+-- "drop" é palavra reservada do SQL, por isso enemy_drop.
+CREATE TABLE enemy_drop (
+    id_enemy     integer REFERENCES enemy (id_enemy) ON DELETE CASCADE,
+    id_item      integer REFERENCES item (id_item),
+    chance       numeric(7, 6) NOT NULL,
+    min_quantity integer NOT NULL DEFAULT 1,
+    max_quantity integer NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_enemy, id_item)
+);
