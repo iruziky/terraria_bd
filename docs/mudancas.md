@@ -21,3 +21,27 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 | `Inimigo` (`idCreature`, `idAI`, `nameCreature`, `hp`, `armour`, `movSpeed`, `doEnrage`, `doDespawn`, `isInvulnerable`, `lore`) | `enemy` (`id_enemy`, `id_ai`, `name`, `hp`, `defense`, `move_speed`, `does_enrage`, `does_despawn`, `is_invulnerable`, `lore`) |
 | `Receita` (`idReceita`, `idResultado`, `quantidadeResultado`) | `recipe` (`id_recipe`, `id_result`, `result_quantity`) |
 | `IngredienteReceita` (`idReceita`, `idIngrediente`, `quantidade`) | `recipe_ingredient` (`id_recipe`, `id_ingredient`, `quantity`) |
+
+## M2. Tabela `Drop` renomeada para `enemy_drop`
+
+**Antes:** `Drop` (`idCreature`, `idItem`, `chance`, `quantidadeMin`, `quantidadeMax`).
+
+**Depois:** `enemy_drop` (`id_enemy`, `id_item`, `chance`, `min_quantity`, `max_quantity`).
+
+**Por quê:** `DROP` é palavra reservada do SQL (`DROP TABLE`). Usar esse nome exigiria aspas em todas as consultas.
+
+## M3. ENUMs substituídos por `text` com `CHECK`
+
+**Antes:** `ENUM` em `Jogador.classe`, `Inventario.tipo` e `Item.tipo`.
+
+**Depois:** colunas `text` com `CHECK (coluna IN (...))`. A mesma técnica foi aplicada a `player.team` e `item.rarity`, que antes eram texto livre:
+
+| Coluna | Valores permitidos |
+|---|---|
+| `player.class` | `melee`, `ranged`, `magic`, `summoner` |
+| `player.team` | `none`, `red`, `green`, `blue`, `yellow`, `pink` |
+| `inventory.type` | `main`, `piggy_bank`, `safe`, `ammo`, `equipment` |
+| `item.type` | `weapon`, `tool`, `armor`, `accessory`, `block`, `material`, `consumable`, `ammo`, `crafting_station` |
+| `item.rarity` | `Gray`, `White`, `Blue`, `Green`, `Orange`, `Light Red`, `Pink`, `Light Purple`, `Lime`, `Yellow`, `Cyan`, `Red`, `Purple` |
+
+**Por quê:** restrições de domínio com `CHECK` foram o conteúdo visto em aula e são mais fáceis de alterar que um tipo `ENUM` (basta trocar a restrição). Os nomes de raridade seguem a [página de raridade da wiki](https://terraria.wiki.gg/wiki/Rarity).
