@@ -1,0 +1,107 @@
+classDiagram
+    direction LR
+    class player {
+        +SERIAL id_player PK
+        +TEXT name
+        +INT hp
+        +INT max_hp
+        +INT mana
+        +INT max_mana
+        +TEXT class
+        +REAL move_speed
+        +REAL crit_chance
+        +BOOLEAN is_alive
+        +BOOLEAN used_demon_heart
+        +INT coins
+        +TEXT team
+        +JSONB general_stats
+    }
+    class inventory {
+        +SERIAL id_inventory PK
+        +INT id_player FK
+        +TEXT type
+        +INT capacity
+    }
+    class inventory_item {
+        +INT id_inventory PK, FK
+        +INT slot PK
+        +INT id_item FK
+        +INT quantity
+        +BOOLEAN equipped
+    }
+    class item {
+        +SERIAL id_item PK
+        +TEXT name
+        +TEXT type
+        +TEXT rarity
+        +INT damage
+    }
+    class biome {
+        +SERIAL id_biome PK
+        +TEXT name
+    }
+    class enemy_biome {
+        +INT id_enemy PK, FK
+        +INT id_biome PK, FK
+    }
+    class enemy {
+        +SERIAL id_enemy PK
+        +INT id_ai FK
+        +TEXT name
+        +BIGINT hp
+        +INT defense
+        +INT damage
+        +REAL move_speed
+        +BOOLEAN does_enrage
+        +BOOLEAN does_despawn
+        +BOOLEAN is_invulnerable
+        +TEXT lore
+    }
+    class ai {
+        +SERIAL id_ai PK
+        +TEXT name
+        +TEXT behavior
+    }
+    class enemy_drop {
+        +INT id_enemy PK, FK
+        +INT id_item PK, FK
+        +NUMERIC chance
+        +INT min_quantity
+        +INT max_quantity
+    }
+    class recipe {
+        +SERIAL id_recipe PK
+        +INT id_result FK
+        +INT result_quantity
+        +INT id_station FK
+    }
+    class recipe_ingredient {
+        +INT id_recipe PK, FK
+        +INT id_ingredient PK, FK
+        +INT quantity
+    }
+
+    player "1" *-- "1..*" inventory : possui
+    inventory "1" *-- "0..*" inventory_item : contem
+    item "1" -- "0..*" inventory_item : ocupa
+    enemy "1" *-- "1..*" enemy_biome : habita
+    biome "1" -- "0..*" enemy_biome : abriga
+    ai "1" <-- "0..*" enemy : segue
+    enemy "1" -- "0..*" enemy_drop : origina
+    item "1" -- "0..*" enemy_drop : e obtido em
+    item "1" <-- "0..*" recipe : produz
+    item "0..1" <-- "0..*" recipe : e estacao de
+    recipe "1" *-- "1..*" recipe_ingredient : exige
+    item "1" -- "0..*" recipe_ingredient : participa
+
+    style player fill:#16263d,stroke:#54d2d2,color:#f4fbff,stroke-width:2px
+    style item fill:#16263d,stroke:#54d2d2,color:#f4fbff,stroke-width:2px
+    style enemy fill:#16263d,stroke:#54d2d2,color:#f4fbff,stroke-width:2px
+    style biome fill:#16263d,stroke:#54d2d2,color:#f4fbff,stroke-width:2px
+    style inventory fill:#282f3a,stroke:#ffc857,color:#fffaf0,stroke-width:2px
+    style ai fill:#282f3a,stroke:#ffc857,color:#fffaf0,stroke-width:2px
+    style recipe fill:#282f3a,stroke:#ffc857,color:#fffaf0,stroke-width:2px
+    style inventory_item fill:#2b2040,stroke:#b58cff,color:#faf7ff,stroke-width:2px
+    style enemy_biome fill:#2b2040,stroke:#b58cff,color:#faf7ff,stroke-width:2px
+    style enemy_drop fill:#2b2040,stroke:#b58cff,color:#faf7ff,stroke-width:2px
+    style recipe_ingredient fill:#2b2040,stroke:#b58cff,color:#faf7ff,stroke-width:2px
