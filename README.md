@@ -19,7 +19,8 @@ Os dados do jogo foram retirados da [Terraria Wiki](https://terraria.wiki.gg) (v
 ```
 docs/
   iteracao1/               entrega do trabalho 1 (minimundo, diagrama UML e justificativas)
-  iteracao2/der.md         DER da segunda iteração (Mermaid)
+  iteracao2/der.mmd        código Mermaid do diagrama UML da segunda iteração
+  iteracao2/der.svg        diagrama UML da segunda iteração
   mudancas.md              mudanças da primeira para a segunda iteração
 sql/
   01_schema.sql            criação das tabelas e restrições
@@ -31,7 +32,7 @@ docker-compose.yml         PostgreSQL 16 já criado e populado
 
 ## DER
 
-O diagrama completo, com as cardinalidades, está em [`docs/iteracao2/der.md`](docs/iteracao2/der.md). As mudanças em relação ao trabalho 1 (nomenclatura, relação N:N entre inimigos e biomas, estação como item, restrições etc.) estão explicadas em [`docs/mudancas.md`](docs/mudancas.md).
+O diagrama UML da segunda iteração, com as cardinalidades, está em [`docs/iteracao2/der.svg`](docs/iteracao2/der.svg), e o código Mermaid que o gera em [`docs/iteracao2/der.mmd`](docs/iteracao2/der.mmd). As mudanças em relação ao trabalho 1 (nomenclatura, relação N:N entre inimigos e biomas, estação como item, restrições etc.) estão explicadas em [`docs/mudancas.md`](docs/mudancas.md).
 
 ## Como rodar o banco
 

@@ -1,5 +1,5 @@
 -- Criação das tabelas do banco Terraria (segunda iteração).
--- Ver docs/iteracao2/der.md e docs/mudancas.md.
+-- Ver docs/iteracao2/der.svg e docs/mudancas.md.
 
 -- Permite executar o script novamente, recriando o banco do zero.
 DROP TABLE IF EXISTS inventory_item, inventory, player,
