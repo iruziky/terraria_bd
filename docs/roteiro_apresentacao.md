@@ -27,3 +27,27 @@ Mostrar [`mudancas.md`](mudancas.md). Pontos principais:
 4. **ENUMs viraram `CHECK`**, e foram adicionadas restrições de domínio (vida entre 0 e o máximo, chance entre 0 e 1, um inventário de cada tipo por jogador).
 5. **`hookSlot` saiu** (o gancho é um item no inventário de equipamento) e **`corruptedHeart` virou `used_demon_heart`**, o item equivalente encontrado na wiki.
 6. Nomes em `snake_case` e em inglês, `jsonb` e ações `CASCADE`/`RESTRICT` nas FKs.
+
+## 4. Exemplos de utilização
+
+### Consultas (`sql/03_consultas.sql`)
+
+Rodar o arquivo inteiro ou mostrar algumas consultas:
+
+- **3:** inventário do Iruziky (junção de 4 tabelas);
+- **7:** formas de obter Gel, Hook, Torch e Grappling Hook (`UNION`);
+- **11 e 11b:** divisão. Iruziky e Heitor têm todos os ingredientes da Iron Pickaxe, mas só o Iruziky tem a quantidade necessária;
+- **16:** restrições em ação (cada comando falha com a mensagem da restrição).
+
+### Aplicação (`app/main.py`)
+
+Sequência sugerida:
+
+1. `1` listar jogadores: o Davi está morto, com 0 de vida.
+2. `5` receita de `iron pickaxe`: 10 Iron Bar + 3 Wood na Iron Anvil.
+3. `6` fabricar com `heitor` e `iron pickaxe`: falha e mostra que faltam Iron Bars (tem 4 de 10).
+4. `6` fabricar com `iruziky` e `iron pickaxe`: funciona.
+5. `2` inventário do `iruziky`: a picareta apareceu num slot novo, e Iron Bar e Wood diminuíram.
+6. `4` como obter `hook`: drop do Skeleton e da Piranha.
+7. `7` derrotar `demon eye` com o `heitor` algumas vezes: às vezes dropa Lens (33,33%).
+8. `6` fabricar `lesser healing potion` com o `heitor` (funciona) e com o `iruziky` (falta Bottle).
