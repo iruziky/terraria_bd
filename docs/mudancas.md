@@ -82,3 +82,27 @@ Este documento lista o que mudou entre o diagrama UML do trabalho 1 ([`docs/iter
 **Depois:** `recipe.id_station`, FK para `item`, que pode ser nulo (receita feita à mão).
 
 **Por quê:** as estações (Work Bench, Furnace, Iron Anvil) são itens do jogo e também têm receitas. Com texto livre, `'Work Bench'` e `'workbench'` seriam estações diferentes e não daria para consultar "o que preciso para construir a estação desta receita". Com a FK, a estação é validada e pode ser ligada às outras tabelas. Até um item comum pode ser estação: a Bottle colocada no mundo (Placed Bottle) é a estação das poções.
+
+## M7. Remoção de `Jogador.hookSlot`
+
+**Antes:** `hookSlot VARCHAR` no jogador.
+
+**Depois:** o gancho é um item (por exemplo, Grappling Hook) guardado no inventário do tipo `equipment`, com `equipped = true`.
+
+**Por quê:** era redundância. O equipamento já é modelado por `inventory` e `inventory_item`. A capacidade do inventário `equipment` nos dados é 9: 3 de armadura + 5 de acessório + 1 de gancho. Com o Demon Heart, sobe para 10.
+
+## A10. `corruptedHeart` renomeado para `used_demon_heart`
+
+**Antes:** `corruptedHeart BOOLEAN`.
+
+**Depois:** `used_demon_heart boolean`.
+
+**Por quê:** na wiki não existe nenhum item ou estado do jogador chamado "Corrupted Heart" (os "corações" da Corruption/Crimson são objetos do mundo, não do jogador). O equivalente mais próximo é o [Demon Heart](https://terraria.wiki.gg/wiki/Demon_Heart), um consumível que "permanentemente concede ao jogador um slot de acessório extra" e só pode ser usado uma vez por jogador. Por isso, um booleano no jogador faz sentido.
+
+## M8. `statusGerais JSON` → `general_stats jsonb`
+
+**Antes:** `statusGerais JSON`, sem conteúdo definido.
+
+**Depois:** `general_stats jsonb` com as chaves `defense`, `life_regen` e `luck`.
+
+**Por quê:** `jsonb` é a forma recomendada pelo PostgreSQL de guardar JSON (binária, indexável e com operadores como `->>`). As chaves foram fixadas para que o conteúdo do campo seja conhecido e possa ser usado nas consultas.
